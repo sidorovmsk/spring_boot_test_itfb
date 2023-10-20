@@ -25,3 +25,5 @@ spring:
 
   thymeleaf:
     prefix: classpath:/templates/
+    cache: false
+    suffix: .html

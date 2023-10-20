@@ -1,18 +1,16 @@
 package spring_boot_java.test_itfb.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
+import spring_boot_java.test_itfb.dto.PersonDto;
 import spring_boot_java.test_itfb.models.Person;
-import spring_boot_java.test_itfb.security.PersonDetails;
 import spring_boot_java.test_itfb.services.RegistrationService;
 import spring_boot_java.test_itfb.util.PersonValidator;
 
@@ -53,24 +51,21 @@ public class AuthController {
         return "redirect:/login";
     }
 
+    @ResponseBody
     @GetMapping("/about")
-    public String showUserInfo(Model model) {
+    public ResponseEntity<?> showUserInfo() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        if (authentication != null && authentication.getPrincipal() instanceof PersonDetails) {
-            PersonDetails personDetails = (PersonDetails) authentication.getPrincipal();
-            String username = personDetails.getUsername();
-            String role = personDetails.getAuthorities().stream()
-                    .map(GrantedAuthority::getAuthority)
-                    .findFirst()
-                    .orElse("No Role");
-            model.addAttribute("username", username);
-            model.addAttribute("role", role);
-        } else {
-            model.addAttribute("username", "User not authenticated");
-            model.addAttribute("role", "N/A");
-        }
 
-        return "about";
+        if (authentication.getPrincipal() instanceof UserDetails) {
+            UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+
+            PersonDto userInfo = new PersonDto();
+            userInfo.setUsername(userDetails.getUsername());
+            userInfo.setRole(userDetails.getAuthorities().toString());
+
+            return ResponseEntity.ok(userInfo);
+        }
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Пользователь не аутентифицирован");
     }
 
     @GetMapping("/logout")
