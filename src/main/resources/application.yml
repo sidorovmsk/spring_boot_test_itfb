@@ -1,0 +1,27 @@
+spring:
+
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    url: jdbc:postgresql://localhost:5432/test_itfb_db
+    username: postgres
+    password: postgres
+
+  mvc:
+    hiddenmethod:
+      filter:
+        enabled: true
+
+  hibernate:
+    dialect: org.hibernate.dialect.PostgresPlusDialect
+    show_sql: 'true'
+    current_session_context_class: thread
+
+  liquibase:
+    enabled: true  # Включает использование Liquibase
+    change-log: classpath:db/changelog/changelog-master.yaml  # Указание пути к changelog файлу
+    default-schema: public  # Схема по умолчанию
+  #          drop-first: false  # Не удалять схему перед применением изменений (по желанию)
+  #          liquibase-hibernate-validator: false  # Отключить Hibernate Validator (по желанию)
+
+  thymeleaf:
+    prefix: classpath:/templates/

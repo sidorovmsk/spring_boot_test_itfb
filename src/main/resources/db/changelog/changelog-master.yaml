@@ -1,0 +1,236 @@
+databaseChangeLog:
+  - changeSet:
+      id: 1
+      author: your_name
+      changes:
+        - createTable:
+            tableName: authors
+            columns:
+              - column:
+                  name: id
+                  type: INTEGER
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+              - column:
+                  name: name
+                  type: VARCHAR(255)
+
+  - changeSet:
+      id: 2
+      author: your_name
+      changes:
+        - createTable:
+            tableName: books
+            columns:
+              - column:
+                  name: id
+                  type: INTEGER
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+              - column:
+                  name: title
+                  type: VARCHAR(255)
+
+  - changeSet:
+      id: 3
+      author: your_name
+      changes:
+        - createTable:
+            tableName: authors_books
+            columns:
+              - column:
+                  name: author_id
+                  type: INTEGER
+              - column:
+                  name: book_id
+                  type: INTEGER
+
+  - changeSet:
+      id: 4
+      author: your_name
+      changes:
+        - addForeignKeyConstraint:
+            baseTableName: authors_books
+            baseColumnNames: author_id
+            referencedTableName: authors
+            referencedColumnNames: id
+            constraintName: fk_authors_books_author_id
+
+  - changeSet:
+      id: 5
+      author: your_name
+      changes:
+        - addForeignKeyConstraint:
+            baseTableName: authors_books
+            baseColumnNames: book_id
+            referencedTableName: books
+            referencedColumnNames: id
+            constraintName: fk_authors_books_book_id
+
+  - changeSet:
+      id: 6
+      author: your_name
+      changes:
+        - insert:
+            tableName: authors
+            columns:
+              - column:
+                  name: name
+                  value: 'Ильф'
+
+  - changeSet:
+      id: 7
+      author: your_name
+      changes:
+        - insert:
+            tableName: authors
+            columns:
+              - column:
+                  name: name
+                  value: 'Петров'
+
+  - changeSet:
+      id: 8
+      author: your_name
+      changes:
+        - insert:
+            tableName: authors
+            columns:
+              - column:
+                  name: name
+                  value: 'Толстой'
+  - changeSet:
+      id: 9
+      author: your_name
+      changes:
+        - insert:
+            tableName: books
+            columns:
+              - column:
+                  name: title
+                  value: '12 Стульев'
+
+  - changeSet:
+      id: 10
+      author: your_name
+      changes:
+        - insert:
+            tableName: books
+            columns:
+              - column:
+                  name: title
+                  value: 'Война и Мир'
+
+  - changeSet:
+      id: 11
+      author: your_name
+      changes:
+        - createTable:
+            tableName: person
+            columns:
+              - column:
+                  name: id
+                  type: INTEGER
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: username
+                  type: VARCHAR(255)
+                  constraints:
+                    unique: true
+                    nullable: false
+              - column:
+                  name: password
+                  type: VARCHAR(255)
+              - column:
+                  name: role
+                  type: VARCHAR(100)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: enabled
+                  type: BOOLEAN
+
+  - changeSet:
+      id: 12
+      author: your_name
+      changes:
+        - insert:
+            tableName: person
+            columns:
+              - column:
+                  name: username
+                  value: 'admin'
+              - column:
+                  name: password
+                  value: "$2a$10$oT9D7YJdgVDy.0oxyjm4E.gRNje7edzoGhxSD8J3IWB/nPrjntK0y"
+              - column:
+                  name: role
+                  value: 'ROLE_ADMIN'
+              - column:
+                  name: enabled
+                  value: true
+
+  - changeSet:
+      id: 13
+      author: your_name
+      changes:
+        - insert:
+            tableName: person
+            columns:
+              - column:
+                  name: username
+                  value: 'user'
+              - column:
+                  name: password
+                  value: "$2a$10$XvOGelLgdgSVVYV/b09A1.NHTcbQbb5DdX9bFZKpCSYEj7RJANege"
+              - column:
+                  name: role
+                  value: 'ROLE_USER'
+              - column:
+                  name: enabled
+                  value: true
+  - changeSet:
+      id: 14
+      author: your_name
+      changes:
+        - insert:
+            tableName: authors_books
+            columns:
+              - column:
+                  name: author_id
+                  valueNumeric: 1
+              - column:
+                  name: book_id
+                  valueNumeric: 1
+  - changeSet:
+      id: 15
+      author: your_name
+      changes:
+        - insert:
+            tableName: authors_books
+            columns:
+              - column:
+                  name: author_id
+                  valueNumeric: 2
+              - column:
+                  name: book_id
+                  valueNumeric: 1
+
+  - changeSet:
+      id: 16
+      author: your_name
+      changes:
+        - insert:
+            tableName: authors_books
+            columns:
+              - column:
+                  name: author_id
+                  valueNumeric: 3
+              - column:
+                  name: book_id
+                  valueNumeric: 2
