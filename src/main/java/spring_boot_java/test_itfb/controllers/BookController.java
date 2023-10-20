@@ -4,7 +4,10 @@ package spring_boot_java.test_itfb.controllers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+import spring_boot_java.test_itfb.models.Book;
 import spring_boot_java.test_itfb.services.BookService;
+
+import java.util.List;
 
 @Controller
 @RequestMapping("/books")
@@ -15,6 +18,12 @@ public class BookController {
     @Autowired
     public BookController(BookService bookService) {
         this.bookService = bookService;
+    }
+
+    @ResponseBody
+    @GetMapping()
+    public List<Book> getAllBooks() {
+        return bookService.findAll();
     }
 
 //    @GetMapping()

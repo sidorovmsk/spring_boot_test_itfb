@@ -1,8 +1,7 @@
 package spring_boot_java.test_itfb.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
 
 import javax.persistence.*;
 import java.util.List;
@@ -18,9 +17,7 @@ public class Author {
 
     private String name;
 
-    @ManyToMany
-    @JoinTable(name = "authors_books",
-            joinColumns = @JoinColumn(name = "author_id"),
-            inverseJoinColumns = @JoinColumn(name = "book_id"))
+    @ManyToMany(mappedBy = "authors")
+    @JsonIgnore
     private List<Book> books;
 }
