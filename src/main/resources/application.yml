@@ -27,3 +27,9 @@ spring:
     prefix: classpath:/templates/
     cache: false
     suffix: .html
+
+  management:
+    endpoints:
+      web:
+        exposure:
+          include: prometheus
