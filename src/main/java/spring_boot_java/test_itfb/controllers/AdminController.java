@@ -6,17 +6,12 @@ import org.springframework.web.bind.annotation.GetMapping;
 import spring_boot_java.test_itfb.services.AdminService;
 
 @Controller
-public class HelloController {
+public class AdminController {
     private final AdminService adminService;
 
     @Autowired
-    public HelloController(AdminService adminService) {
+    public AdminController(AdminService adminService) {
         this.adminService = adminService;
-    }
-
-    @GetMapping("/hello")
-    public String sayHello() {
-        return "hello";
     }
 
     @GetMapping("/admin")
