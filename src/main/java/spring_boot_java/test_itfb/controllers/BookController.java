@@ -5,14 +5,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import spring_boot_java.test_itfb.models.Book;
 import spring_boot_java.test_itfb.services.BookService;
 
 import java.util.List;
 
 @Controller
-@RequestMapping("/books")
 public class BookController {
 
     private final BookService bookService;
@@ -23,12 +25,12 @@ public class BookController {
     }
 
     @ResponseBody
-    @GetMapping()
+    @GetMapping("/books")
     public List<Book> getAllBooks() {
         return bookService.findAll();
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/book/{id}")
     public ResponseEntity<?> show(@PathVariable("id") int id) {
         Book book = bookService.findOne(id);
         if (book == null) { //todo описание ниже

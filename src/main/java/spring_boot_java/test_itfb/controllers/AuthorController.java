@@ -2,19 +2,41 @@ package spring_boot_java.test_itfb.controllers;
 
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.*;
-import spring_boot_java.test_itfb.services.BookService;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
+import spring_boot_java.test_itfb.models.Author;
+import spring_boot_java.test_itfb.services.AuthorService;
+
+import java.util.List;
 
 @Controller
-@RequestMapping("/books")
 public class AuthorController {
 
-    private final BookService bookService;
+    private final AuthorService authorService;
 
     @Autowired
-    public AuthorController(BookService bookService) {
-        this.bookService = bookService;
+    public AuthorController(AuthorService authorService) {
+        this.authorService = authorService;
+    }
+
+    @ResponseBody
+    @GetMapping("/authors")
+    public List<Author> getAllAuthors() {
+        return authorService.findAll();
+    }
+
+    @GetMapping("/author/{id}")
+    public ResponseEntity<?> show(@PathVariable("id") int id) {
+        Author author = authorService.findOne(id);
+        if (author == null) { //todo описание ниже
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Автор не найден, реализовать централизованное управление исключениями.");
+        }
+        return ResponseEntity.ok(author);
     }
 
 //    @GetMapping()

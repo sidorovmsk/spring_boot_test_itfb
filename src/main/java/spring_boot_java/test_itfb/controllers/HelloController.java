@@ -1,11 +1,8 @@
 package spring_boot_java.test_itfb.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
-import spring_boot_java.test_itfb.security.PersonDetails;
 import spring_boot_java.test_itfb.services.AdminService;
 
 @Controller
