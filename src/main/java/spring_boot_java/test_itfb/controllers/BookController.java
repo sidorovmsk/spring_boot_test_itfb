@@ -2,6 +2,8 @@ package spring_boot_java.test_itfb.controllers;
 
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import spring_boot_java.test_itfb.models.Book;
@@ -24,6 +26,15 @@ public class BookController {
     @GetMapping()
     public List<Book> getAllBooks() {
         return bookService.findAll();
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<?> show(@PathVariable("id") int id) {
+        Book book = bookService.findOne(id);
+        if (book == null) { //todo описание ниже
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Книга не найдена, реализовать централизованное управление исключениями. При запросе несуществующей книги генерить исключение BookNotFound");
+        }
+        return ResponseEntity.ok(book);
     }
 
 //    @GetMapping()
