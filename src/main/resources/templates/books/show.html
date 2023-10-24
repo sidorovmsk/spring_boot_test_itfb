@@ -2,40 +2,81 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Book</title>
+    <title>Books</title>
 </head>
 <body>
-<p th:text="${book.getBookName()  + ', ' + book.getAuthor() + ', ' + book.getYear()}">VALUE</p>
+<h1>Book Data</h1>
+<p><strong>ID:</strong> <span id="bookId"></span></p>
+<p><strong>Title:</strong> <span id="bookTitle"></span></p>
+<h1>Авторы:</h1>
+<ul id="author-list">
+</ul>
+<input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
 
-<div th:if="${owner}">
-    <span>Книга сейчас у: </span> <span th:text="${owner.getFullName()}">Person Name</span>
+<button id="editButton">Редактировать</button>
+<button id="deleteButton">Удалить</button>
 
-    <form th:method="PATCH" th:action="@{/books/{id}/release(id=${book.getId()})}">
-        <input type="submit" value="Освободить книгу">
-    </form>
-</div>
+<script>
+    // Получить bookId из URL
+    const bookId = window.location.pathname.split("/").pop();
 
-<div th:if="${people}">
-    <span>Эта книга свободна. Кому назначить её?</span>
-    <form th:method="PATCH" th:action="@{/books/{id}/assign(id=${book.getId()})}">
-        <label for="person">Выберите человека</label>
-        <select th:object="${person}" th:field="*{id}" id="person">
-            <option th:each="person : ${people}" th:value="${person.getId()}" th:text="${person.getFullName()}">
-            </option>
-        </select>
-        <input type="submit" value="Назначить книгу">
-    </form>
-</div>
+    // JavaScript код для отображения данных и авторов
+    function displayBookData(book) {
+        document.getElementById("bookId").textContent = book.id;
+        document.getElementById("bookTitle").textContent = book.title;
+    }
 
-<hr/>
+    // Отправить GET-запрос на сервер для получения данных о Book
+    fetch(`/api/book/${bookId}`)
+        .then(response => response.json())
+        .then(data => {
+            displayBookData(data);
 
-<form th:method="GET" th:action="@{/books/{id}/edit(id=${book.getId()})}">
-    <input type="submit" value="Редактировать"/>
-</form>
+            // Очищаем список авторов перед добавлением новых
+            const authorList = document.getElementById("author-list");
+            authorList.innerHTML = "";
 
-<form th:method="DELETE" th:action="@{/books/{id}(id=${book.getId()})}">
-    <input type="submit" value="Delete">
-</form>
+            data.authors.forEach(author => {
+                const listItem = document.createElement("li");
+                listItem.textContent = `ID: ${author.id}, Name: ${author.name}`;
+                authorList.appendChild(listItem);
+            });
+        })
+        .catch(error => {
+            console.error("Error loading book data: " + error);
+        });
 
+    // Код для кнопки "Удалить"
+    document.getElementById("deleteButton").addEventListener("click", function () {
+        // Отправить DELETE-запрос на сервер для удаления книги
+        fetch(`/book_delete/${bookId}`, {
+            method: "DELETE",
+            credentials: "same-origin",
+            // headers: {
+            //     "X-CSRF-TOKEN": csrfToken // Передача CSRF-токена
+            // }
+        })
+
+            .then(response => {
+                if (response.status === 200) {
+                    // Удаление прошло успешно
+                    alert("Книга удалена успешно.");
+                    window.location.href = "/books"; // Перенаправить на главную страницу книг
+                } else {
+                    // Возникла ошибка при удалении
+                    alert("Произошла ошибка при удалении книги.");
+                }
+            })
+            .catch(error => {
+                console.error("Error deleting book: " + error);
+            });
+    });
+
+    // Код для кнопки "Редактировать"
+    document.getElementById("editButton").addEventListener("click", function () {
+        // Перенаправить на страницу редактирования книги, например, /book_edit/1
+        window.location.href = `/book_edit/${bookId}`;
+    });
+</script>
 </body>
 </html>

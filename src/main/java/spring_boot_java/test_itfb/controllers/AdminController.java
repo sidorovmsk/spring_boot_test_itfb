@@ -39,8 +39,14 @@ public class AdminController {
         return "admin";
     }
 
-    @ResponseBody
     @GetMapping("/users")
+    public String getHTMLUsers() {
+        adminService.doAdminStuff();
+        return "users";
+    }
+
+    @ResponseBody
+    @GetMapping("/api/users")
     public ResponseEntity<List<PersonDto>> getAllUsers() {
         adminService.doAdminStuff();
         List<PersonDto> peopleDto = peopleRepository.findAll().stream()

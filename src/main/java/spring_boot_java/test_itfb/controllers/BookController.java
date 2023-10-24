@@ -5,11 +5,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 import spring_boot_java.test_itfb.models.Book;
+import spring_boot_java.test_itfb.models.Person;
 import spring_boot_java.test_itfb.services.BookService;
 
 import java.util.List;
@@ -24,111 +22,50 @@ public class BookController {
         this.bookService = bookService;
     }
 
-    @ResponseBody
     @GetMapping("/books")
+    public String getBooks() {
+        return "books/books";
+    }
+
+    @ResponseBody
+    @GetMapping("api/books")
     public List<Book> getAllBooks() {
         return bookService.findAll();
     }
 
-    @GetMapping("/book/{id}")
-    public ResponseEntity<?> show(@PathVariable("id") int id) {
+    @ResponseBody
+    @GetMapping("api/book/{id}")
+    public ResponseEntity<?> shodw(@PathVariable("id") int id) {
         Book book = bookService.findOne(id);
-        if (book == null) { //todo описание ниже
+        if (book == null) { //todo описание ниже 85 урок пересмотреть и в 65 строке тоже самое
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Книга не найдена, реализовать централизованное управление исключениями. При запросе несуществующей книги генерить исключение BookNotFound");
         }
         return ResponseEntity.ok(book);
     }
 
-//    @GetMapping()
-//    public String index(Model model,
-//                        @RequestParam(value = "page", required = false) Integer page,
-//                        @RequestParam(value = "books_per_page", required = false) Integer books_per_page,
-//                        @RequestParam(value = "sort_by_year", required = false) boolean sort_by_year) {
-//        if (page == null || books_per_page == null)
-//            model.addAttribute("books", bookService.findAll());
-//        else
-//            model.addAttribute("books", bookService.findWithPagination(page, books_per_page, sort_by_year));
-//        return "books/index";
-//    }
-//
-//
-//    @GetMapping("/{id}")
-//    public String show(@PathVariable("id") int id, Model model, @ModelAttribute("person") User user) {
-//        model.addAttribute("book", bookService.findOne(id));
-//
-//        // TODO: 10.03.2023 закончил на этом методе, он работает, сделать методы назначения книги и освобождения
+    @GetMapping("/book/{id}")
+    public String show(@PathVariable("id") int id) {
+        return "books/show";
+    }
 
-//        if (bookService.getBookOwner(id) != null)
-//            model.addAttribute("owner", bookService.getBookOwner(id));
-//        else
-//            model.addAttribute("people", peopleService.findAll());
+    @GetMapping("/book_edit/{id}")
+    public String showUserById(@PathVariable("id") int id) {
+        return "books/edit";
+    }
 
-//        return "books/show";
-//    }
-//
-//    @GetMapping("/new")
-//    public String newBook(@ModelAttribute("book") Book book) {
-//        return "books/new";
-//    }
-//
-//    @PostMapping()
-//    public String create(@ModelAttribute("book") @Valid Book book,
-//                         BindingResult bindingResult) {
-////        personValidator.validate(person, bindingResult);
-//
-//        if (bindingResult.hasErrors())
-//            return "books/new";
-//
-//        bookService.save(book);
-//        return "redirect:/books";
-//    }
-//
-//    @GetMapping("/{id}/edit")
-//    public String edit(Model model, @PathVariable("id") int id) {
-//        model.addAttribute("book", bookService.findOne(id));
-//        return "books/edit";
-//    }
-//
-//    @PatchMapping("/{id}")
-//    public String update(@ModelAttribute("book") @Valid Book book,
-//                         BindingResult bindingResult,
-//                         @PathVariable("id") int id) {
-////        personValidator.validate(person, bindingResult);//проверка дубликата
-//
-//        if (bindingResult.hasErrors())
-//            return "books/edit";
-//
-////        bookService.update(id, book);
-//        return "redirect:/books";
-//    }
-//
-//    @DeleteMapping("/{id}")
-//    public String delete(@PathVariable("id") int id) {
-////        bookService.delete(id);
-//        return "redirect:/books";
-//    }
-//
-//    @PatchMapping("/{id}/release")
-//    public String release(@PathVariable("id") int id) {
-////        bookService.release(id);
-//        return "redirect:/books/" + id;
-//    }
-//
-//    @PatchMapping("/{id}/assign")
-//    public String assign(@PathVariable("id") int id, @ModelAttribute("person") User selectedUser) {
-////        bookService.assign(id, selectedPerson);
-//        return "redirect:/books/" + id;
-//    }
-//
-//    @GetMapping("/search")
-//    public String searchPage() {
-//        return "books/search";
-//    }
-//
-//    @PostMapping("/search")
-//    public String searchByBookNameStartingWith(Model model, @RequestParam(value = "query") String query) {
-//        model.addAttribute("books", bookService.findByBookNameStartingWith(query));
-//        return "books/search";
-//    }
+    @ResponseBody
+    @PutMapping("/book_edit/{id}")
+    public ResponseEntity<?> editUserById(@PathVariable("id") int id,
+                                          @RequestBody Book updatedBook) {
+        Book book = bookService.findOne(id);
+
+        if (book == null) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Book not found");
+        } else {
+            book.setTitle(updatedBook.getTitle());
+            bookService.save(book);
+            return ResponseEntity.ok("Book with ID " + id + " has been updated.");
+        }
+    }
 
 }

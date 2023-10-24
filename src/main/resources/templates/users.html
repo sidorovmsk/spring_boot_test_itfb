@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Список пользователей</title>
+</head>
+<body>
+<h1>Список пользователей</h1>
+<ul id="user-list">
+</ul>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const userList = document.getElementById("user-list");
+
+        // Функция для загрузки данных пользователей с бэкенда
+        function loadUsers() {
+            fetch("/api/users")
+                .then(response => response.json())
+                .then(data => {
+                    // Очищаем список пользователей перед добавлением новых
+                    userList.innerHTML = "";
+
+                    // Добавляем каждого пользователя в список
+                    data.forEach(user => {
+                        const listItem = document.createElement("li");
+                        listItem.textContent = `ID: ${user.id}, Name: ${user.username},  Role: ${user.role}, Enabled: ${user.enabled}`;
+                        userList.appendChild(listItem);
+                    });
+                })
+                .catch(error => {
+                    console.error("Ошибка при загрузке пользователей:", error);
+                });
+        }
+
+        // Загрузить пользователей при загрузке страницы
+        loadUsers();
+    });
+
+</script>
+</body>
+</html>

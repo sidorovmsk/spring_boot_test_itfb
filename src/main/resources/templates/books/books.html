@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Список книг</title>
+</head>
+<body>
+<h1>Список книг</h1>
+<ul id="book-list">
+</ul>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const bookList = document.getElementById("book-list");
+
+        function loadBooks() {
+            fetch("/api/books") // Замените "/api/books" на вашу конечную точку API
+                .then(response => response.json())
+                .then(data => {
+                    bookList.innerHTML = "";
+
+                    data.forEach(book => {
+                        const listItem = document.createElement("li");
+                        listItem.textContent = `ID: ${book.id}, Title: ${book.title}`;
+
+                        // Создайте список авторов для книги
+                        const authorsList = document.createElement("ul");
+                        book.authors.forEach(author => {
+                            const authorItem = document.createElement("li");
+                            authorItem.textContent = `Author: ${author.name}`;
+                            authorsList.appendChild(authorItem);
+                        });
+
+                        // Добавьте список авторов к элементу списка книги
+                        listItem.appendChild(authorsList);
+
+                        bookList.appendChild(listItem);
+                    });
+                })
+                .catch(error => {
+                    console.error("Ошибка при загрузке книг:", error);
+                });
+        }
+
+        loadBooks();
+    });
+
+</script>
+</body>
+</html>
