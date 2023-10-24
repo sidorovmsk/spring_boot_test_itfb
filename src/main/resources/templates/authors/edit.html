@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Edit Author</title>
+</head>
+<body>
+<h1>Edit Author</h1>
+
+<form id="editAuthorForm">
+    <input type="hidden" name="_csrf" th:value="${_csrf.token}"/>
+
+    <!-- Hidden input field to store the author ID -->
+    <input type="hidden" name="authorId" id="authorId" />
+
+    <label for="name">Name:</label>
+    <input type="text" id="name" name="name" />
+
+    <button type="submit" id="saveButton">Save</button>
+</form>
+
+<button id="cancelButton">Cancel</button>
+
+<script>
+    // JavaScript код для заполнения формы данными об авторе
+    const authorId = window.location.pathname.split("/").pop();
+
+    fetch(`/api/author/${authorId}`)
+        .then(response => response.json())
+        .then(data => {
+            document.getElementById("authorId").value = data.id;
+            document.getElementById("name").value = data.name;
+        })
+        .catch(error => {
+            console.error("Error loading author data: " + error);
+        });
+
+    // Код для кнопки "Save"
+    document.getElementById("editAuthorForm").addEventListener("submit", function (e) {
+        e.preventDefault();
+
+        // Соберите данные из формы
+        const formData = new FormData(document.getElementById("editAuthorForm"));
+        const authorData = {};
+        formData.forEach((value, key) => {
+            authorData[key] = value;
+        });
+
+        // Отправьте данные на сервер для сохранения
+        fetch(`/author_edit/${authorData.authorId}`, {
+            method: "PUT",
+            headers: {
+                "Content-Type": "application/json",
+                // Дополнительные заголовки, включая CSRF-токен
+            },
+            body: JSON.stringify(authorData)
+        })
+            .then(response => {
+                if (response.status === 200) {
+                    // Сохранение прошло успешно
+                    alert("Автор успешно отредактирован.");
+                    window.location.href = `/author/${authorData.authorId}`;
+                } else {
+                    // Ошибка при сохранении
+                    alert("Произошла ошибка при редактировании автора.");
+                }
+            })
+            .catch(error => {
+                console.error("Error editing author: " + error);
+            });
+    });
+
+    // Код для кнопки "Cancel"
+    document.getElementById("cancelButton").addEventListener("click", function () {
+        window.location.href = `/author/${authorData.authorId}`; // Возврат на страницу автора
+    });
+</script>
+</body>
+</html>

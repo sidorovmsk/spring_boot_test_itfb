@@ -33,6 +33,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .csrf().ignoringRequestMatchers(new AntPathRequestMatcher("/book_edit/**"))
                 .and()
+                .csrf().ignoringRequestMatchers(new AntPathRequestMatcher("/author_edit/**"))
+                .and()
                 .authorizeRequests()
 //                .antMatchers("/admin").hasRole("ADMIN")
                 .antMatchers(HttpMethod.DELETE, "/user_delete/**").hasRole("ADMIN")

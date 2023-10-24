@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Список авторов</title>
+</head>
+<body>
+<h1>Список авторов</h1>
+<ul id="author-list">
+    <!-- Здесь будет отображаться список авторов -->
+</ul>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const authorList = document.getElementById("author-list");
+
+        // Функция для выполнения GET-запроса к серверу
+        function fetchAuthors() {
+            fetch("/api/authors")
+                .then(response => response.json())
+                .then(data => {
+                    // Очищаем список перед обновлением
+                    authorList.innerHTML = "";
+
+                    // Добавляем авторов в список
+                    data.forEach(author => {
+                        const li = document.createElement("li");
+                        li.textContent = `ID: ${author.id}, Name: ${author.name}`;
+                        authorList.appendChild(li);
+                    });
+                })
+                .catch(error => console.error("Ошибка при получении данных: ", error));
+        }
+
+        // Вызываем функцию для загрузки авторов при загрузке страницы
+        fetchAuthors();
+    });
+
+</script>
+</body>
+</html>

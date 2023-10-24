@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Authors</title>
+</head>
+<body>
+<h1>Author Data</h1>
+<p><strong>ID:</strong> <span id="authorId"></span></p>
+<p><strong>Title:</strong> <span id="authorName"></span></p>
+
+<input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+
+<button id="editButton">Редактировать</button>
+<!--<button id="deleteButton">Удалить</button>-->
+
+<script>
+
+    const authorId = window.location.pathname.split("/").pop();
+
+    // JavaScript код для отображения данных и авторов
+    function displayAuthorData(author) {
+        document.getElementById("authorId").textContent = author.id;
+        document.getElementById("authorName").textContent = author.name;
+    }
+
+    // Отправить GET-запрос на сервер для получения данных о Book
+    fetch(`/api/author/${authorId}`)
+        .then(response => response.json())
+        .then(data => {
+            displayAuthorData(data);
+        })
+        .catch(error => {
+            console.error("Error loading book data: " + error);
+        });
+
+    // Код для кнопки "Редактировать"
+    document.getElementById("editButton").addEventListener("click", function () {
+        // Перенаправить на страницу редактирования книги, например, /book_edit/1
+        window.location.href = `/author_edit/${authorId}`;
+    });
+</script>
+</body>
+</html>

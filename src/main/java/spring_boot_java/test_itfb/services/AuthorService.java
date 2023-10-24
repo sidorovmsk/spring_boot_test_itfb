@@ -7,6 +7,7 @@ import org.springframework.transaction.annotation.Transactional;
 import spring_boot_java.test_itfb.models.Author;
 import spring_boot_java.test_itfb.repositories.AuthorRepository;
 
+import javax.validation.Valid;
 import java.util.List;
 import java.util.Optional;
 
@@ -27,6 +28,11 @@ public class AuthorService {
     public Author findOne(int id) {
         Optional<Author> foundAuthor = authorRepository.findById(id);
         return foundAuthor.orElse(null);
+    }
+
+    @Transactional
+    public void save(@Valid Author book) {
+        authorRepository.save(book);
     }
 
 //    public List<Book> findByBookNameStartingWith(String name) {
