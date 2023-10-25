@@ -1,6 +1,7 @@
 package spring_boot_java.test_itfb.controllers;
 
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,6 +15,7 @@ import spring_boot_java.test_itfb.services.BookService;
 import java.util.List;
 
 @Controller
+@Slf4j
 public class BookController {
 
     private final BookService bookService;
@@ -31,6 +33,7 @@ public class BookController {
     @ResponseBody
     @GetMapping("api/books")
     public List<Book> getAllBooks() {
+        log.info("Received a request to get the list of books.");
         return bookService.findAll();
     }
 

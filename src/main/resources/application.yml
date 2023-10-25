@@ -33,3 +33,12 @@ spring:
       web:
         exposure:
           include: prometheus
+logging:
+  level:
+    root: INFO
+    com.example: INFO
+  pattern:
+    console: '%d{HH:mm:ss.SSS} [%t] %-5level %logger{36} - %msg%n'
+    file: '%d{HH:mm:ss.SSS} [%t] %-5level %logger{36} - %msg%n'
+  file:
+    name: logs/requests.log
