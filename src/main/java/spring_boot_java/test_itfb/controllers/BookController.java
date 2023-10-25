@@ -80,4 +80,15 @@ public class BookController {
         return ResponseEntity.ok("Book with title " + newBook.getTitle() + " has been created.");
     }
 
+    @ResponseBody
+    @GetMapping("api/findbooks")
+    public List<Book> find(@RequestParam String sometext) {
+        return bookService.findBooksByAuthorNamePart(sometext);
+    }
+
+    @GetMapping("/findbooks")
+    public String find() {
+        return "books/search";
+    }
+
 }

@@ -7,6 +7,5 @@ import spring_boot_java.test_itfb.models.Book;
 
 @Repository
 public interface BookRepository extends JpaRepository<Book, Integer> {
-//    List<Book> findByBookNameStartingWith(String name);
 
 }

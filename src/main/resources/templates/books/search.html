@@ -1,38 +1,50 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>Search book</title>
+    <title>Поиск книг</title>
 </head>
 <body>
-
-<form th:method="POST" th:action="@{/books/search}">
-    <label for="query">Введите поисковой запрос: </label>
-    <input type="text" id="query" name="query"/>
-    <br/>
-    <input type="submit" value="Search!"/>
+<h1>Поиск книг</h1>
+<form id="searchForm">
+    <input type="text" id="sometext" placeholder="Введите автора">
+    <button type="submit">Найти</button>
 </form>
+<ul id="book-list"></ul>
 
-<div th:if="${books}">
-    <div th:if="${books.isEmpty()}">
-        <span>Книг не найдено</span>
-    </div>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const bookList = document.getElementById("book-list");
+        const searchForm = document.getElementById("searchForm");
+        const sometextInput = document.getElementById("sometext");
 
-    <div th:each="book : ${books}">
-        <p th:text="${book.getBookName() + ', ' + book.getAuthor() + ', ' + book.getYear()}">book</p>
+        searchForm.addEventListener("submit", function (event) {
+            event.preventDefault();
+            const sometext = sometextInput.value;
+            fetch(`/api/findbooks?sometext=${sometext}`)
+                .then(response => response.json())
+                .then(data => {
+                    bookList.innerHTML = "";
 
-        <div th:if="${book.getOwner() !=null}">
-            <span>Книга сейчас у: </span> <span th:text="${book.getOwner().getFullName()}">Person name</span>
-        </div>
+                    data.forEach(book => {
+                        const listItem = document.createElement("li");
+                        listItem.textContent = `ID: ${book.id}, Title: ${book.title}`;
 
-        <div th:if="${book.getOwner()==null}">
-            <span>Книга свободна</span>
-        </div>
+                        const authorsList = document.createElement("ul");
+                        book.authors.forEach(author => {
+                            const authorItem = document.createElement("li");
+                            authorItem.textContent = `Author: ${author.name}`;
+                            authorsList.appendChild(authorItem);
+                        });
 
-        <hr/>
-    </div>
-
-</div>
-
+                        listItem.appendChild(authorsList);
+                        bookList.appendChild(listItem);
+                    });
+                })
+                .catch(error => {
+                    console.error("Ошибка при выполнении поиска:", error);
+                });
+        });
+    });
+</script>
 </body>
 </html>
