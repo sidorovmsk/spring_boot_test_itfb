@@ -68,4 +68,16 @@ public class AuthorController {
         }
     }
 
+    @GetMapping("/create/author")
+    public String createView() {
+        return "authors/create";
+    }
+
+    @ResponseBody
+    @PostMapping("/create/author")
+    public ResponseEntity<?> createApi(@RequestBody Author newAuthor) {
+        authorService.save(newAuthor);
+        return ResponseEntity.ok("Book with title " + newAuthor.getName() + " has been created.");
+    }
+
 }

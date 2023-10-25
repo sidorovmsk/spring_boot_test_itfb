@@ -68,4 +68,16 @@ public class BookController {
         }
     }
 
+    @GetMapping("/create/book")
+    public String createView() {
+        return "books/create";
+    }
+
+    @ResponseBody
+    @PostMapping("/create/book")
+    public ResponseEntity<?> createApi(@RequestBody Book newBook) {
+        bookService.save(newBook);
+        return ResponseEntity.ok("Book with title " + newBook.getTitle() + " has been created.");
+    }
+
 }

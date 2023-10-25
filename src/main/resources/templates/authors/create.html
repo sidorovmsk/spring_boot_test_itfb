@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Создание автора</title>
+</head>
+<body>
+<h1>Создание автора</h1>
+<form id="authorForm">
+    <label for="name">Имя автора:</label>
+    <input type="text" id="name" name="name" required>
+    <br>
+    <button type="submit">Сохранить</button>
+</form>
+<div id="message"></div>
+
+<script>
+    const authorForm = document.getElementById('authorForm');
+    const messageDiv = document.getElementById('message');
+
+    authorForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const name = document.getElementById('name').value;
+
+        const data = { name };
+
+        try {
+            const response = await fetch('/create/author', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data)
+            });
+
+            if (response.status === 200) {
+                messageDiv.innerText = 'Автор создан успешно';
+                // Перенаправляем пользователя на /authors после успешного создания автора
+                window.location.href = '/authors';
+            } else {
+                messageDiv.innerText = 'Произошла ошибка при создании автора';
+            }
+        } catch (error) {
+            console.error(error);
+            messageDiv.innerText = 'Произошла ошибка при отправке запроса';
+        }
+    });
+</script>
+</body>
+</html>

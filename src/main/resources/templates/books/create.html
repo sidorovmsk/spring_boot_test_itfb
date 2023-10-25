@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Создание книги</title>
+</head>
+<body>
+<h1>Создание книги</h1>
+<form id="bookForm">
+    <label for="title">Название книги:</label>
+    <input type="text" id="title" name="title" required><br>
+
+    <label for="authors">Авторы:</label>
+    <br/>
+    <select id="authors" name="authors[]" multiple required>
+        <!-- Опции для списка авторов будут добавлены с помощью JavaScript -->
+    </select><br>
+
+    <button type="button" id="saveButton">Сохранить</button>
+</form>
+
+<p id="message"></p>
+
+<script>
+    // Функция для отправки POST-запроса
+    async function createBook() {
+        const title = document.getElementById('title').value;
+        const selectedAuthors = Array.from(document.getElementById('authors').selectedOptions).map(option => ({
+            id: option.value,
+            name: option.textContent
+        }));
+
+        const data = {title, authors: selectedAuthors};
+
+        try {
+            const response = await fetch('/create/book', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data)
+            });
+
+            if (response.status === 200) {
+                document.getElementById('message').innerText = 'Книга создана успешно';
+                // Перенаправление на страницу /books через 2 секунды
+                setTimeout(() => {
+                    window.location.href = '/books';
+                }, 2000);
+            } else {
+                document.getElementById('message').innerText = 'Произошла ошибка при создании книги';
+            }
+        } catch (error) {
+            console.error('Ошибка при выполнении запроса:', error);
+        }
+    }
+
+
+    // Функция для загрузки списка авторов из API
+    async function loadAuthors() {
+        try {
+            const response = await fetch('/api/authors');
+            const authors = await response.json();
+            const authorsSelect = document.getElementById('authors');
+
+            authors.forEach(author => {
+                const option = document.createElement('option');
+                option.value = author.id;
+                option.textContent = author.name;
+                authorsSelect.appendChild(option);
+            });
+        } catch (error) {
+            console.error('Ошибка при загрузке списка авторов:', error);
+        }
+    }
+
+    // Вызов функции для загрузки списка авторов при загрузке страницы
+    window.onload = loadAuthors;
+
+    // Назначение обработчика события для кнопки "Сохранить"
+    document.getElementById('saveButton').addEventListener('click', createBook);
+</script>
+</body>
+</html>
