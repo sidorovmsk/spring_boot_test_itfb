@@ -6,6 +6,10 @@
 </head>
 <body>
 <h1>Book Data</h1>
+
+<!-- Элемент для отображения сообщения об ошибке -->
+<p id="error-message" style="color: red; display: none;">Книга с указанным идентификатором не найдена.</p>
+
 <p><strong>ID:</strong> <span id="bookId"></span></p>
 <p><strong>Title:</strong> <span id="bookTitle"></span></p>
 <h1>Авторы:</h1>
@@ -28,7 +32,13 @@
 
     // Отправить GET-запрос на сервер для получения данных о Book
     fetch(`/api/book/${bookId}`)
-        .then(response => response.json())
+        .then(response => {
+            if (response.ok) {
+                return response.json();
+            } else {
+                throw new Error("Книга с указанным идентификатором не найдена.");
+            }
+        })
         .then(data => {
             displayBookData(data);
 
@@ -43,6 +53,12 @@
             });
         })
         .catch(error => {
+            // Отображаем сообщение об ошибке и скрываем информацию о книге
+            document.getElementById("error-message").style.display = "block";
+            document.getElementById("bookId").style.display = "none";
+            document.getElementById("bookTitle").style.display = "none";
+            document.getElementById("author-list").style.display = "none";
+
             console.error("Error loading book data: " + error);
         });
 
@@ -51,10 +67,7 @@
         // Отправить DELETE-запрос на сервер для удаления книги
         fetch(`/book_delete/${bookId}`, {
             method: "DELETE",
-            credentials: "same-origin",
-            // headers: {
-            //     "X-CSRF-TOKEN": csrfToken // Передача CSRF-токена
-            // }
+            credentials: "same-origin"
         })
 
             .then(response => {

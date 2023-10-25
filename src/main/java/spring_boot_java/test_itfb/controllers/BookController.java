@@ -6,6 +6,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+import spring_boot_java.test_itfb.exceptions.BookNotFoundException;
 import spring_boot_java.test_itfb.models.Book;
 import spring_boot_java.test_itfb.models.Person;
 import spring_boot_java.test_itfb.services.BookService;
@@ -37,8 +38,8 @@ public class BookController {
     @GetMapping("api/book/{id}")
     public ResponseEntity<?> shodw(@PathVariable("id") int id) {
         Book book = bookService.findOne(id);
-        if (book == null) { //todo описание ниже 85 урок пересмотреть и в 65 строке тоже самое
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Книга не найдена, реализовать централизованное управление исключениями. При запросе несуществующей книги генерить исключение BookNotFound");
+        if (book == null) {
+            throw new BookNotFoundException("Книга с идентификатором " + id + " не найдена.");
         }
         return ResponseEntity.ok(book);
     }
@@ -60,7 +61,7 @@ public class BookController {
         Book book = bookService.findOne(id);
 
         if (book == null) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Book not found");
+            throw new BookNotFoundException("Книга с идентификатором " + id + " не найдена.");
         } else {
             book.setTitle(updatedBook.getTitle());
             bookService.save(book);
