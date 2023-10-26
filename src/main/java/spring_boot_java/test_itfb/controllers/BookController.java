@@ -102,4 +102,11 @@ public class BookController {
         return "books/search";
     }
 
+    @ResponseBody
+    @DeleteMapping("/book_delete/{id}")
+    public ResponseEntity<?> deleteBookById(@PathVariable("id") int id) {
+        log.info("DELETE request to /book_delete/" + id);
+        return bookService.delete(id);
+    }
+
 }

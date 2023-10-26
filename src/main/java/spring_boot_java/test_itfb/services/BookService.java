@@ -2,6 +2,8 @@ package spring_boot_java.test_itfb.services;
 
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import spring_boot_java.test_itfb.models.Book;
@@ -40,6 +42,16 @@ public class BookService {
 
     public List<Book> findBooksByPartAuthorName(String authorNamePart) {
         return customBookRepository.findBooksByPartAuthorName(authorNamePart);
+    }
+
+    @Transactional
+    public ResponseEntity<?> delete(int id) {
+        if (bookRepository.existsById(id)) {
+            bookRepository.deleteById(id);
+            return ResponseEntity.ok("Book with ID " + id + " has been deleted.");
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Book not found");
+        }
     }
 
 }
