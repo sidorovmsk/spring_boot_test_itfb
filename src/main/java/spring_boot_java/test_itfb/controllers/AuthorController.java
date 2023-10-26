@@ -8,7 +8,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import spring_boot_java.test_itfb.models.Author;
-import spring_boot_java.test_itfb.models.Book;
 import spring_boot_java.test_itfb.services.AuthorService;
 
 import java.util.List;

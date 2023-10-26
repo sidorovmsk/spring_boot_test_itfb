@@ -30,14 +30,14 @@ public class BookController {
     }
 
     @ResponseBody
-    @GetMapping("api/books")
+    @GetMapping("/api/books")
     public List<Book> getBooksJsonList() {
         log.info("GET request to /api/books");
         return bookService.findAll();
     }
 
     @ResponseBody
-    @GetMapping("api/book/{id}")
+    @GetMapping("/api/book/{id}")
     public ResponseEntity<?> showBookById(@PathVariable("id") int id) {
         log.info("GET request to /api/book/" + id);
         Book book = bookService.findOne(id);

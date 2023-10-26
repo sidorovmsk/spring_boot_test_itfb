@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import spring_boot_java.test_itfb.dto.PersonDto;
 import spring_boot_java.test_itfb.models.Person;
+import spring_boot_java.test_itfb.services.AdminService;
 import spring_boot_java.test_itfb.services.RegistrationService;
 import spring_boot_java.test_itfb.util.PersonValidator;
 
@@ -26,11 +27,13 @@ public class AuthController {
 
     private final RegistrationService registrationService;
     private final PersonValidator personValidator;
+    private final AdminService adminService;
 
     @Autowired
-    public AuthController(RegistrationService registrationService, PersonValidator personValidator) {
+    public AuthController(RegistrationService registrationService, PersonValidator personValidator, AdminService adminService) {
         this.registrationService = registrationService;
         this.personValidator = personValidator;
+        this.adminService = adminService;
     }
 
     @GetMapping("/login")
@@ -41,13 +44,15 @@ public class AuthController {
 
     @GetMapping("/registration")
     public String getRegistrationView(@ModelAttribute("person") Person person) {
+        adminService.doAdminStuff();
         log.info("GET request to /registration");
         return "registration";
     }
 
     @PostMapping("/registration")
     public String createNewPerson(@ModelAttribute("person") @Valid Person person,
-                                      BindingResult bindingResult) {
+                                  BindingResult bindingResult) {
+        adminService.doAdminStuff();
         log.info("POST request to /registration with = " + person.getUsername());
         personValidator.validate(person, bindingResult);
 
@@ -59,8 +64,15 @@ public class AuthController {
         return "redirect:/login";
     }
 
-    @ResponseBody
+
     @GetMapping("/about")
+    public String getAboutView() {
+        log.info("GET request to /about");
+        return "about";
+    }
+
+    @ResponseBody
+    @GetMapping("/api/about")
     public ResponseEntity<?> showUserInfo() {
         log.info("GET request to /about");
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -70,8 +82,7 @@ public class AuthController {
 
             PersonDto userInfo = new PersonDto();
             userInfo.setUsername(userDetails.getUsername());
-            userInfo.setRole(userDetails.getAuthorities().toString());
-
+            userInfo.setRole(userDetails.getAuthorities().iterator().next().getAuthority().replace("ROLE_",""));
             return ResponseEntity.ok(userInfo);
         }
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Пользователь не аутентифицирован");

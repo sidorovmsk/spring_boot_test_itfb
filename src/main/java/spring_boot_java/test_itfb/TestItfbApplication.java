@@ -1,6 +1,5 @@
 package spring_boot_java.test_itfb;
 
-import io.micrometer.core.instrument.MeterRegistry;
 import io.micrometer.prometheus.PrometheusConfig;
 import io.micrometer.prometheus.PrometheusMeterRegistry;
 import org.modelmapper.ModelMapper;

@@ -7,7 +7,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import spring_boot_java.test_itfb.dto.PersonDto;
 import spring_boot_java.test_itfb.models.Person;
@@ -32,13 +31,6 @@ public class AdminController {
         this.peopleRepository = peopleRepository;
         this.modelMapper = modelMapper;
         this.passwordEncoder = passwordEncoder;
-    }
-
-    @GetMapping("/admin")
-    public String getAdminView() {
-        log.info("GET request to /admin");
-        adminService.doAdminStuff();
-        return "admin";
     }
 
     @GetMapping("/users")

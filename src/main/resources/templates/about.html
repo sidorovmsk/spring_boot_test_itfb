@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>About Page</title>
+</head>
+<body>
+<div id="aboutData"></div>
+
+<script>
+    // Функция для получения данных при загрузке страницы
+    window.onload = function () {
+        getAboutData();
+    };
+
+    function getAboutData() {
+        fetch('/api/about')
+            .then(response => {
+                if (response.status === 401) {
+                    displayErrorMessage("Пользователь не аутентифицирован");
+                } else {
+                    return response.json();
+                }
+            })
+            .then(data => {
+                if (!data.errorMessage) {
+                    displayAboutData(data);
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+    }
+
+    function displayAboutData(data) {
+        const aboutDataDiv = document.getElementById('aboutData');
+        aboutDataDiv.innerHTML = `
+                <h2>Авторизованный пользователь:</h2>
+                <p>Username: ${data.username}</p>
+                <p>Role: ${data.role}</p>
+            `;
+    }
+
+    function displayErrorMessage(message) {
+        const aboutDataDiv = document.getElementById('aboutData');
+        aboutDataDiv.innerHTML = `<p>${message}</p>`;
+    }
+</script>
+</body>
+</html>
