@@ -29,12 +29,4 @@ public class Person {
     @Column(name = "enabled")
     private boolean enabled;
 
-//    @ManyToMany
-//    @JoinTable(
-//            name = "user_role",
-//            joinColumns = @JoinColumn(name = "user_id"),
-//            inverseJoinColumns = @JoinColumn(name = "role_id")
-//    )
-//    private Min.List<Role> roles;
-
 }

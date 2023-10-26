@@ -1,5 +1,6 @@
 package spring_boot_java.test_itfb.controllers;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,6 +21,7 @@ import spring_boot_java.test_itfb.util.PersonValidator;
 import javax.validation.Valid;
 
 @Controller
+@Slf4j
 public class AuthController {
 
     private final RegistrationService registrationService;
@@ -33,17 +35,20 @@ public class AuthController {
 
     @GetMapping("/login")
     public String loginPage() {
+        log.info("GET request to /login");
         return "login";
     }
 
     @GetMapping("/registration")
     public String registrationPage(@ModelAttribute("person") Person person) {
+        log.info("GET request to /registration");
         return "registration";
     }
 
     @PostMapping("/registration")
     public String performRegistration(@ModelAttribute("person") @Valid Person person,
                                       BindingResult bindingResult) {
+        log.info("POST request to /registration with = " + person.getUsername());
         personValidator.validate(person, bindingResult);
 
         if (bindingResult.hasErrors())
@@ -57,6 +62,7 @@ public class AuthController {
     @ResponseBody
     @GetMapping("/about")
     public ResponseEntity<?> showUserInfo() {
+        log.info("GET request to /about");
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
         if (authentication.getPrincipal() instanceof UserDetails) {
@@ -73,6 +79,7 @@ public class AuthController {
 
     @GetMapping("/logout")
     public String logoutPage() {
+        log.info("GET request to /logout");
         return "logout";
     }
 }

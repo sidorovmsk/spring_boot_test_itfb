@@ -1,5 +1,6 @@
 package spring_boot_java.test_itfb.controllers;
 
+import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -17,7 +18,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-//todo разнести логически контроллеры и выделить сервисный слой для некоторых действий
+@Slf4j
 @Controller
 public class AdminController {
     private final AdminService adminService;
@@ -35,12 +36,14 @@ public class AdminController {
 
     @GetMapping("/admin")
     public String adminPage() {
+        log.info("GET request to /admin");
         adminService.doAdminStuff();
         return "admin";
     }
 
     @GetMapping("/users")
     public String getHTMLUsers() {
+        log.info("GET request to /users");
         adminService.doAdminStuff();
         return "users";
     }
@@ -48,6 +51,7 @@ public class AdminController {
     @ResponseBody
     @GetMapping("/api/users")
     public ResponseEntity<List<PersonDto>> getAllUsers() {
+        log.info("GET request to /api/users");
         adminService.doAdminStuff();
         List<PersonDto> peopleDto = peopleRepository.findAll().stream()
                 .map(user -> modelMapper.map(user, PersonDto.class))
@@ -58,6 +62,7 @@ public class AdminController {
     @ResponseBody
     @GetMapping("/user_json/{id}")
     public ResponseEntity<?> findById(@PathVariable("id") int id) {
+        log.info("GET request to /user_json/" + id);
         adminService.doAdminStuff();
         Optional<Person> person = peopleRepository.findById(id);
         if (person.isEmpty()) {
@@ -67,8 +72,8 @@ public class AdminController {
     }
 
     @GetMapping("/user/{id}")
-    public String show(@PathVariable("id") int id, Model model) {
-//        model.addAttribute("person", peopleRepository.findById(id));
+    public String show(@PathVariable("id") int id) {
+        log.info("GET request to /user/" + id);
         adminService.doAdminStuff();
         return "people/show";
     }
@@ -76,6 +81,7 @@ public class AdminController {
     @ResponseBody
     @DeleteMapping("/user_delete/{id}")
     public ResponseEntity<?> deleteUserById(@PathVariable("id") int id) {
+        log.info("DELETE request to /user_delete/" + id);
         adminService.doAdminStuff();
         System.out.println("deleting");
         if (peopleRepository.existsById(id)) {
@@ -88,6 +94,7 @@ public class AdminController {
 
     @GetMapping("/user_edit/{id}")
     public String showUserById(@PathVariable("id") int id) {
+        log.info("GET request to /user_edit/" + id);
         adminService.doAdminStuff();
         return "people/edit";
     }
@@ -96,6 +103,7 @@ public class AdminController {
     @PostMapping("/user_edit/{id}")
     public ResponseEntity<?> editUserById(@PathVariable("id") int id,
                                           @RequestBody Person updatedPerson) {
+        log.info("POST request to /user_edit/" + id);
         System.out.println("saving");
         adminService.doAdminStuff();
         Person person = peopleRepository.findById(id).orElse(null);
@@ -104,7 +112,7 @@ public class AdminController {
         } else {
             person.setUsername(updatedPerson.getUsername());
             person.setRole(updatedPerson.getRole());
-            if (!updatedPerson.getPassword().equals("")){
+            if (!updatedPerson.getPassword().equals("")) {
                 person.setPassword(passwordEncoder.encode(updatedPerson.getPassword()));
             }
             person.setEnabled(updatedPerson.isEnabled());
