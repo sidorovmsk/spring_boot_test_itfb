@@ -2,11 +2,11 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Person edit page</title>
+    <title>Редактирование данных пользователя</title>
 </head>
 <body>
 
-<h1>Edit Person Data</h1>
+<h1>Редактирование данных пользователя</h1>
 <form id="personForm">
     <p><strong>ID:</strong> <span id="personId"></span></p>
     <p><strong>Username:</strong> <input type="text" id="personUsername" name="username"></p>
@@ -17,7 +17,7 @@
     </p>
     <p><strong>Password:</strong> <input type="text" id="personPassword" name="password"></p>
     <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
-    <button type="button" id="saveButton">Save</button>
+    <button type="button" id="saveButton">Сохранить</button>
 </form>
 
 <script>

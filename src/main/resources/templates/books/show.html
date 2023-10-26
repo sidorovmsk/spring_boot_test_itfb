@@ -2,10 +2,10 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Books</title>
+    <title>Книги</title>
 </head>
 <body>
-<h1>Book Data</h1>
+<h1>Информация о книге</h1>
 
 <!-- Элемент для отображения сообщения об ошибке -->
 <p id="error-message" style="color: red; display: none;">Книга с указанным идентификатором не найдена.</p>
@@ -18,7 +18,7 @@
 <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
 
 <button id="editButton">Редактировать</button>
-<button id="deleteButton">Удалить</button>
+<!--<button id="deleteButton">Удалить</button>-->
 
 <script>
     // Получить bookId из URL

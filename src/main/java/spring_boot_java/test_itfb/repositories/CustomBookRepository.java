@@ -14,7 +14,7 @@ public class CustomBookRepository {
     private EntityManager entityManager;
 
     @SuppressWarnings("unchecked")
-    public List<Book> findBooksByAuthorNamePart(String authorNamePart) {
+    public List<Book> findBooksByPartAuthorName(String authorNamePart) {
         String sql = "SELECT DISTINCT b.* " +
                 "FROM books b " +
                 "JOIN authors_books ab ON b.id = ab.book_id " +

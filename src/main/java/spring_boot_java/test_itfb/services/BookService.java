@@ -38,8 +38,8 @@ public class BookService {
         bookRepository.save(book);
     }
 
-    public List<Book> findBooksByAuthorNamePart(String authorNamePart) {
-        return customBookRepository.findBooksByAuthorNamePart(authorNamePart);
+    public List<Book> findBooksByPartAuthorName(String authorNamePart) {
+        return customBookRepository.findBooksByPartAuthorName(authorNamePart);
     }
 
 }

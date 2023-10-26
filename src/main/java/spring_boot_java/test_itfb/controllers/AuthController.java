@@ -34,19 +34,19 @@ public class AuthController {
     }
 
     @GetMapping("/login")
-    public String loginPage() {
+    public String getLoginView() {
         log.info("GET request to /login");
         return "login";
     }
 
     @GetMapping("/registration")
-    public String registrationPage(@ModelAttribute("person") Person person) {
+    public String getRegistrationView(@ModelAttribute("person") Person person) {
         log.info("GET request to /registration");
         return "registration";
     }
 
     @PostMapping("/registration")
-    public String performRegistration(@ModelAttribute("person") @Valid Person person,
+    public String createNewPerson(@ModelAttribute("person") @Valid Person person,
                                       BindingResult bindingResult) {
         log.info("POST request to /registration with = " + person.getUsername());
         personValidator.validate(person, bindingResult);
@@ -78,7 +78,7 @@ public class AuthController {
     }
 
     @GetMapping("/logout")
-    public String logoutPage() {
+    public String getLogoutView() {
         log.info("GET request to /logout");
         return "logout";
     }

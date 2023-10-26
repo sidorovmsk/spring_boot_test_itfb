@@ -2,10 +2,10 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Edit Book</title>
+    <title>Редактирование книги</title>
 </head>
 <body>
-<h1>Edit Book</h1>
+<h1>Редактирование книги</h1>
 
 <form id="editBookForm">
     <input type="hidden" name="_csrf" th:value="${_csrf.token}"/>
@@ -19,15 +19,15 @@
 
     <!-- Add input fields for other book properties here -->
 
-    <h2>Edit Authors:</h2>
+    <h2>Автор:</h2>
     <ul id="author-list">
         <!-- You can populate the list of authors here -->
     </ul>
 
-    <button type="submit" id="saveButton">Save</button>
+    <button type="submit" id="saveButton">Сохранить</button>
 </form>
 
-<button id="cancelButton">Cancel</button>
+<button id="cancelButton">Отменить</button>
 
 <script>
     // JavaScript код для заполнения списка авторов (подобно коду на странице просмотра книги)

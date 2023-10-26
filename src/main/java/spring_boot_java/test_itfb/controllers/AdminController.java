@@ -35,14 +35,14 @@ public class AdminController {
     }
 
     @GetMapping("/admin")
-    public String adminPage() {
+    public String getAdminView() {
         log.info("GET request to /admin");
         adminService.doAdminStuff();
         return "admin";
     }
 
     @GetMapping("/users")
-    public String getHTMLUsers() {
+    public String getUsersView() {
         log.info("GET request to /users");
         adminService.doAdminStuff();
         return "users";
@@ -50,7 +50,7 @@ public class AdminController {
 
     @ResponseBody
     @GetMapping("/api/users")
-    public ResponseEntity<List<PersonDto>> getAllUsers() {
+    public ResponseEntity<List<PersonDto>> getUsersJsonList() {
         log.info("GET request to /api/users");
         adminService.doAdminStuff();
         List<PersonDto> peopleDto = peopleRepository.findAll().stream()
@@ -61,7 +61,7 @@ public class AdminController {
 
     @ResponseBody
     @GetMapping("/user_json/{id}")
-    public ResponseEntity<?> findById(@PathVariable("id") int id) {
+    public ResponseEntity<?> getUserJsonById(@PathVariable("id") int id) {
         log.info("GET request to /user_json/" + id);
         adminService.doAdminStuff();
         Optional<Person> person = peopleRepository.findById(id);
@@ -72,7 +72,7 @@ public class AdminController {
     }
 
     @GetMapping("/user/{id}")
-    public String show(@PathVariable("id") int id) {
+    public String getUserShowView(@PathVariable("id") int id) {
         log.info("GET request to /user/" + id);
         adminService.doAdminStuff();
         return "people/show";
@@ -93,7 +93,7 @@ public class AdminController {
     }
 
     @GetMapping("/user_edit/{id}")
-    public String showUserById(@PathVariable("id") int id) {
+    public String getUserEditView(@PathVariable("id") int id) {
         log.info("GET request to /user_edit/" + id);
         adminService.doAdminStuff();
         return "people/edit";

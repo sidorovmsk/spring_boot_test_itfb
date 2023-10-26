@@ -25,21 +25,21 @@ public class AuthorController {
     }
 
     @GetMapping("/authors")
-    public String getAuthors() {
+    public String getAuthorsView() {
         log.info("GET request to /authors");
         return "authors/authors";
     }
 
     @ResponseBody
     @GetMapping("api/authors")
-    public List<Author> getAllAuthors() {
+    public List<Author> getAuthorsJsonList() {
         log.info("GET request to api/authors");
         return authorService.findAll();
     }
 
     @ResponseBody
     @GetMapping("api/author/{id}")
-    public ResponseEntity<?> show(@PathVariable("id") int id) {
+    public ResponseEntity<?> showAuthorById(@PathVariable("id") int id) {
         log.info("GET request to api/authors/" + id);
         Author author = authorService.findOne(id);
         if (author == null) { //todo описание ниже
@@ -49,13 +49,13 @@ public class AuthorController {
     }
 
     @GetMapping("/author/{id}")
-    public String api_show_rename(@PathVariable("id") int id) {
+    public String getAuthorShowView(@PathVariable("id") int id) {
         log.info("GET request to /authors/" + id);
         return "authors/show";
     }
 
     @GetMapping("/author_edit/{id}")
-    public String showUserById(@PathVariable("id") int id) {
+    public String getAuthorEditView(@PathVariable("id") int id) {
         log.info("GET request to /author_edit/" + id);
         return "authors/edit";
     }
@@ -77,14 +77,14 @@ public class AuthorController {
     }
 
     @GetMapping("/create/author")
-    public String createView() {
+    public String getAuthorCreateView() {
         log.info("GET request to /create/author");
         return "authors/create";
     }
 
     @ResponseBody
     @PostMapping("/create/author")
-    public ResponseEntity<?> createApi(@RequestBody Author newAuthor) {
+    public ResponseEntity<?> createAuthor(@RequestBody Author newAuthor) {
         log.info("POST request to /create/author with name = " + newAuthor.getName());
         authorService.save(newAuthor);
         return ResponseEntity.ok("Book with title " + newAuthor.getName() + " has been created.");

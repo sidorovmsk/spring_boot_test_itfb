@@ -2,10 +2,10 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Edit Author</title>
+    <title>Редактирование автора</title>
 </head>
 <body>
-<h1>Edit Author</h1>
+<h1>Редактирование автора</h1>
 
 <form id="editAuthorForm">
     <input type="hidden" name="_csrf" th:value="${_csrf.token}"/>
@@ -16,10 +16,10 @@
     <label for="name">Name:</label>
     <input type="text" id="name" name="name" />
 
-    <button type="submit" id="saveButton">Save</button>
+    <button type="submit" id="saveButton">Сохранить</button>
 </form>
 
-<button id="cancelButton">Cancel</button>
+<button id="cancelButton">Отменить</button>
 
 <script>
     // JavaScript код для заполнения формы данными об авторе
