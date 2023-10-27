@@ -16,6 +16,10 @@
 <script>
     const authorForm = document.getElementById('authorForm');
     const messageDiv = document.getElementById('message');
+    const csrfToken = document.cookie
+        .split('; ')
+        .find(row => row.startsWith('XSRF-TOKEN='))
+        .split('=')[1];
 
     authorForm.addEventListener('submit', async (e) => {
         e.preventDefault();
@@ -27,7 +31,8 @@
             const response = await fetch('/create/author', {
                 method: 'POST',
                 headers: {
-                    'Content-Type': 'application/json'
+                    'Content-Type': 'application/json',
+                    "X-XSRF-TOKEN": csrfToken
                 },
                 body: JSON.stringify(data)
             });

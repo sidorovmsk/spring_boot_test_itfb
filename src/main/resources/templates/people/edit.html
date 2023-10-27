@@ -9,13 +9,13 @@
 <h1>Редактирование данных пользователя</h1>
 <form id="personForm">
     <p><strong>ID:</strong> <span id="personId"></span></p>
-    <p><strong>Username:</strong> <input type="text" id="personUsername" name="username"></p>
-    <p><strong>Role:</strong> <input type="text" id="personRole" name="role"></p>
+    <p><strong>Username:</strong> <label for="personUsername"></label><input type="text" id="personUsername" name="username"></p>
+    <p><strong>Role:</strong> <label for="personRole"></label><input type="text" id="personRole" name="role"></p>
     <p><strong>Enabled:</strong>
-        <input type="radio" id="personEnabled" name="enabled" value="true"> Enabled
-        <input type="radio" id="personDisabled" name="enabled" value="false"> Disabled
+        <label for="personEnabled"></label><input type="radio" id="personEnabled" name="enabled" value="true"> Enabled
+        <label for="personDisabled"></label><input type="radio" id="personDisabled" name="enabled" value="false"> Disabled
     </p>
-    <p><strong>Password:</strong> <input type="text" id="personPassword" name="password"></p>
+    <p><strong>Password:</strong> <label for="personPassword"></label><input type="text" id="personPassword" name="password"></p>
     <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
     <button type="button" id="saveButton">Сохранить</button>
 </form>
@@ -23,6 +23,10 @@
 <script>
     // Получить userId из URL
     const userId = window.location.pathname.split("/").pop();
+    const csrfToken = document.cookie
+        .split('; ')
+        .find(row => row.startsWith('XSRF-TOKEN='))
+        .split('=')[1];
 
     // JavaScript код для отображения данных
     function displayPersonData(data) {
@@ -49,7 +53,8 @@
         fetch(`/user_edit/${userId}`, {
             method: 'POST',
             headers: {
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                "X-XSRF-TOKEN": csrfToken
             },
             body: JSON.stringify(jsonData),
         })

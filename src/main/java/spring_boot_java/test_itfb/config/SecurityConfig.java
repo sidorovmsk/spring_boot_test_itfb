@@ -10,7 +10,7 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
+import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
 import spring_boot_java.test_itfb.services.PersonDetailsService;
 
 @EnableWebSecurity
@@ -26,20 +26,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        // конфигурируем авторизацию //todo изучить вопрос и включить csrf (проблема отправки токена с фронта)
-        http.csrf().ignoringRequestMatchers(new AntPathRequestMatcher("/user_delete/**"))
-                .and()
-                .csrf().ignoringRequestMatchers(new AntPathRequestMatcher("/user_edit/**"))
-                .and()
-                .csrf().ignoringRequestMatchers(new AntPathRequestMatcher("/book_edit/**"))
-                .and()
-                .csrf().ignoringRequestMatchers(new AntPathRequestMatcher("/author_edit/**"))
-                .and()
-                .csrf().ignoringRequestMatchers(new AntPathRequestMatcher("/create/book"))
-                .and()
-                .csrf().ignoringRequestMatchers(new AntPathRequestMatcher("/create/author"))
-                .and()
-                .csrf().ignoringRequestMatchers(new AntPathRequestMatcher("/book_delete/**"))
+        http.csrf()
+                .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())
                 .and()
                 .authorizeRequests()
 //                .antMatchers("/admin").hasRole("ADMIN")

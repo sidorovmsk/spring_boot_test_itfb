@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <title>Редактирование книги</title>
@@ -8,14 +8,11 @@
 <h1>Редактирование книги</h1>
 
 <form id="editBookForm">
-    <input type="hidden" name="_csrf" th:value="${_csrf.token}"/>
-
-    <!-- These hidden input fields store the book data obtained from the API -->
-    <input type="hidden" name="bookId" id="bookId" />
-    <input type="hidden" name="bookTitle" id="bookTitle" />
+    <input type="hidden" name="bookId" id="bookId"/>
+    <input type="hidden" name="bookTitle" id="bookTitle"/>
 
     <label for="title">Title:</label>
-    <input type="text" id="title" name="title" />
+    <input type="text" id="title" name="title"/>
 
     <!-- Add input fields for other book properties here -->
 
@@ -34,6 +31,10 @@
 
     // JavaScript код для заполнения формы данными о книге
     const bookId = window.location.pathname.split("/").pop();
+    const csrfToken = document.cookie
+        .split('; ')
+        .find(row => row.startsWith('XSRF-TOKEN='))
+        .split('=')[1];
 
     fetch(`/api/book/${bookId}`)
         .then(response => response.json())
@@ -74,7 +75,7 @@
             method: "PUT",
             headers: {
                 "Content-Type": "application/json",
-                // Дополнительные заголовки, включая CSRF-токен
+                "X-XSRF-TOKEN": csrfToken
             },
             body: JSON.stringify(bookData)
         })

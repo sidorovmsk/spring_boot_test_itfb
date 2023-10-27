@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <title>Редактирование автора</title>
@@ -8,7 +8,6 @@
 <h1>Редактирование автора</h1>
 
 <form id="editAuthorForm">
-    <input type="hidden" name="_csrf" th:value="${_csrf.token}"/>
 
     <!-- Hidden input field to store the author ID -->
     <input type="hidden" name="authorId" id="authorId" />
@@ -24,6 +23,10 @@
 <script>
     // JavaScript код для заполнения формы данными об авторе
     const authorId = window.location.pathname.split("/").pop();
+    const csrfToken = document.cookie
+        .split('; ')
+        .find(row => row.startsWith('XSRF-TOKEN='))
+        .split('=')[1];
 
     fetch(`/api/author/${authorId}`)
         .then(response => response.json())
@@ -51,7 +54,7 @@
             method: "PUT",
             headers: {
                 "Content-Type": "application/json",
-                // Дополнительные заголовки, включая CSRF-токен
+                "X-XSRF-TOKEN": csrfToken
             },
             body: JSON.stringify(authorData)
         })

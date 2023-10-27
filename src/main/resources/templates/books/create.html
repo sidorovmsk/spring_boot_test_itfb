@@ -21,6 +21,11 @@
 <p id="message"></p>
 
 <script>
+    const csrfToken = document.cookie
+        .split('; ')
+        .find(row => row.startsWith('XSRF-TOKEN='))
+        .split('=')[1];
+
     // Функция для отправки POST-запроса
     async function createBook() {
         const title = document.getElementById('title').value;
@@ -35,7 +40,8 @@
             const response = await fetch('/create/book', {
                 method: 'POST',
                 headers: {
-                    'Content-Type': 'application/json'
+                    'Content-Type': 'application/json',
+                    "X-XSRF-TOKEN": csrfToken
                 },
                 body: JSON.stringify(data)
             });
