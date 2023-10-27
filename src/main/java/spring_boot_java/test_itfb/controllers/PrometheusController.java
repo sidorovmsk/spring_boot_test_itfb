@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 @Slf4j
 public class PrometheusController {
 
-    private PrometheusMeterRegistry prometheusRegistry;
+    private final PrometheusMeterRegistry prometheusRegistry;
 
     @Autowired
     public PrometheusController(PrometheusMeterRegistry prometheusRegistry) {
