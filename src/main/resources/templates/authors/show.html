@@ -10,11 +10,15 @@
 <p><strong>Title:</strong> <span id="authorName"></span></p>
 
 <button id="editButton">Редактировать</button>
-<!--<button id="deleteButton">Удалить</button>-->
+<button id="deleteButton">Удалить</button>
 
 <script>
 
     const authorId = window.location.pathname.split("/").pop();
+    const csrfToken = document.cookie
+        .split('; ')
+        .find(row => row.startsWith('XSRF-TOKEN='))
+        .split('=')[1];
 
     // JavaScript код для отображения данных и авторов
     function displayAuthorData(author) {
@@ -36,6 +40,28 @@
     document.getElementById("editButton").addEventListener("click", function () {
         // Перенаправить на страницу редактирования книги, например, /book_edit/1
         window.location.href = `/author_edit/${authorId}`;
+    });
+
+    document.getElementById("deleteButton").addEventListener("click", function () {
+        // Отправить DELETE-запрос на сервер для удаления книги
+        fetch(`/author_delete/${authorId}`, {
+            method: "DELETE",
+            headers: {
+                "Content-Type": "application/json",
+                "X-XSRF-TOKEN": csrfToken
+            }
+        })
+            .then(response => {
+                if (response.status === 200) {
+                    alert("Автор удален успешно.");
+                    window.location.href = "/authors";
+                } else {
+                    alert("Произошла ошибка при удалении автора.");
+                }
+            })
+            .catch(error => {
+                console.error("Error deleting author: " + error);
+            });
     });
 </script>
 </body>

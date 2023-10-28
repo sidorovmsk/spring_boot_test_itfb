@@ -22,6 +22,10 @@
 <script>
     // Получить bookId из URL
     const bookId = window.location.pathname.split("/").pop();
+    const csrfToken = document.cookie
+        .split('; ')
+        .find(row => row.startsWith('XSRF-TOKEN='))
+        .split('=')[1];
 
     // JavaScript код для отображения данных и авторов
     function displayBookData(book) {
@@ -65,10 +69,13 @@
     document.getElementById("deleteButton").addEventListener("click", function () {
         // Отправить DELETE-запрос на сервер для удаления книги
         fetch(`/book_delete/${bookId}`, {
-            method: "DELETE",
-            credentials: "same-origin"
-        })
-
+                method: "DELETE",
+                headers: {
+                    "Content-Type": "application/json",
+                    "X-XSRF-TOKEN": csrfToken
+                }
+            }
+        )
             .then(response => {
                 if (response.status === 200) {
                     // Удаление прошло успешно

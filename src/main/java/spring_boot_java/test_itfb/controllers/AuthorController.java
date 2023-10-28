@@ -89,4 +89,11 @@ public class AuthorController {
         return ResponseEntity.ok("Book with title " + newAuthor.getName() + " has been created.");
     }
 
+    @ResponseBody
+    @DeleteMapping("/author_delete/{id}")
+    public ResponseEntity<?> deleteAuthorById(@PathVariable("id") int id) {
+        log.info("DELETE request to /author_delete/" + id);
+        return authorService.delete(id);
+    }
+
 }

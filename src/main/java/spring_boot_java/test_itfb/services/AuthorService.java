@@ -2,6 +2,8 @@ package spring_boot_java.test_itfb.services;
 
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import spring_boot_java.test_itfb.models.Author;
@@ -33,5 +35,15 @@ public class AuthorService {
     @Transactional
     public void save(@Valid Author book) {
         authorRepository.save(book);
+    }
+
+    @Transactional
+    public ResponseEntity<?> delete(int id) {
+        if (authorRepository.existsById(id)) {
+            authorRepository.deleteById(id);
+            return ResponseEntity.ok("Author with ID " + id + " has been deleted.");
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Author not found");
+        }
     }
 }

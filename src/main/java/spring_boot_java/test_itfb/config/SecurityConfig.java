@@ -30,7 +30,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())
                 .and()
                 .authorizeRequests()
-                .antMatchers(HttpMethod.DELETE, "/user_delete/**", "/book_delete/**").hasRole("ADMIN")
+                .antMatchers(HttpMethod.DELETE, "/user_delete/**", "/book_delete/**", "/author_delete/**").hasRole("ADMIN")
                 .antMatchers("/login", "/books", "/api/books", "/book/**", "/api/book/**", "/authors", "/author/**", "/api/authors", "/api/author/**", "/error", "/about", "/logout", "/api/about", "/metrics").permitAll()
                 .anyRequest().hasAnyRole("USER", "ADMIN")
                 .and()
