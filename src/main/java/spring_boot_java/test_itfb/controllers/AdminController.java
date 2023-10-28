@@ -3,12 +3,12 @@ package spring_boot_java.test_itfb.controllers;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import spring_boot_java.test_itfb.dto.PersonDto;
+import spring_boot_java.test_itfb.exceptions.PersonNotFoundException;
 import spring_boot_java.test_itfb.models.Person;
 import spring_boot_java.test_itfb.repositories.PeopleRepository;
 import spring_boot_java.test_itfb.services.AdminService;
@@ -46,7 +46,11 @@ public class AdminController {
         log.info("GET request to /api/users");
         adminService.doAdminStuff();
         List<PersonDto> peopleDto = peopleRepository.findAll().stream()
-                .map(user -> modelMapper.map(user, PersonDto.class))
+                .map(user -> {
+                    PersonDto personDto = modelMapper.map(user, PersonDto.class);
+                    personDto.setRole(personDto.getRole().replace("ROLE_", ""));
+                    return personDto;
+                })
                 .collect(Collectors.toList());
         return ResponseEntity.ok(peopleDto);
     }
@@ -58,9 +62,11 @@ public class AdminController {
         adminService.doAdminStuff();
         Optional<Person> person = peopleRepository.findById(id);
         if (person.isEmpty()) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Person not found");
+            throw new PersonNotFoundException("Пользователь с идентификатором " + id + " не найден.");
         }
-        return ResponseEntity.ok(modelMapper.map(person, PersonDto.class));
+        PersonDto personDto = modelMapper.map(person, PersonDto.class);
+        personDto.setRole(personDto.getRole().replace("ROLE_", ""));
+        return ResponseEntity.ok(personDto);
     }
 
     @GetMapping("/user/{id}")
@@ -80,7 +86,7 @@ public class AdminController {
             peopleRepository.deleteById(id);
             return ResponseEntity.ok("User with ID " + id + " has been deleted.");
         } else {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Person not found");
+            throw new PersonNotFoundException("Пользователь с идентификатором " + id + " не найден.");
         }
     }
 
@@ -100,7 +106,7 @@ public class AdminController {
         adminService.doAdminStuff();
         Person person = peopleRepository.findById(id).orElse(null);
         if (person == null) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Person not found");
+            throw new PersonNotFoundException("Пользователь с идентификатором " + id + " не найден.");
         } else {
             person.setUsername(updatedPerson.getUsername());
             person.setRole(updatedPerson.getRole());

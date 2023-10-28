@@ -6,6 +6,7 @@
 </head>
 <body>
 <h1>Информация об авторе</h1>
+<p id="error-message" style="color: red; display: none;">Автор с указанным идентификатором не найден.</p>
 <p><strong>ID:</strong> <span id="authorId"></span></p>
 <p><strong>Title:</strong> <span id="authorName"></span></p>
 
@@ -28,12 +29,23 @@
 
     // Отправить GET-запрос на сервер для получения данных о Book
     fetch(`/api/author/${authorId}`)
-        .then(response => response.json())
+        .then(response => {
+            if (response.ok) {
+                return response.json();
+            } else {
+                throw new Error("Автор с указанным идентификатором не найден.");
+            }
+        })
         .then(data => {
             displayAuthorData(data);
         })
         .catch(error => {
-            console.error("Error loading book data: " + error);
+            // Отображаем сообщение об ошибке и скрываем информацию о книге
+            document.getElementById("error-message").style.display = "block";
+            document.getElementById("authorId").style.display = "none";
+            document.getElementById("authorName").style.display = "none";
+
+            console.error("Error loading author data: " + error);
         });
 
     // Код для кнопки "Редактировать"

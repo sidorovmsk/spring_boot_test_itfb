@@ -3,10 +3,10 @@ package spring_boot_java.test_itfb.controllers;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+import spring_boot_java.test_itfb.exceptions.AuthorNotFoundException;
 import spring_boot_java.test_itfb.models.Author;
 import spring_boot_java.test_itfb.services.AuthorService;
 
@@ -41,8 +41,8 @@ public class AuthorController {
     public ResponseEntity<?> showAuthorById(@PathVariable("id") int id) {
         log.info("GET request to api/authors/" + id);
         Author author = authorService.findOne(id);
-        if (author == null) { //todo описание ниже
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Автор не найден, реализовать централизованное управление исключениями.");
+        if (author == null) {
+            throw new AuthorNotFoundException("Автор с идентификатором " + id + " не найден.");
         }
         return ResponseEntity.ok(author);
     }
@@ -67,7 +67,7 @@ public class AuthorController {
         Author author = authorService.findOne(id);
 
         if (author == null) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Author not found");
+            throw new AuthorNotFoundException("Автор с идентификатором " + id + " не найден.");
         } else {
             author.setName(updatedAuthor.getName());
             authorService.save(author);
@@ -86,7 +86,7 @@ public class AuthorController {
     public ResponseEntity<?> createAuthor(@RequestBody Author newAuthor) {
         log.info("POST request to /create/author with name = " + newAuthor.getName());
         authorService.save(newAuthor);
-        return ResponseEntity.ok("Book with title " + newAuthor.getName() + " has been created.");
+        return ResponseEntity.ok("Author with title " + newAuthor.getName() + " has been created.");
     }
 
     @ResponseBody
