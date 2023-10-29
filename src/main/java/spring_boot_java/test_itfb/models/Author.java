@@ -20,4 +20,12 @@ public class Author {
     @ManyToMany(mappedBy = "authors")
     @JsonIgnore
     private List<Book> books;
+
+    @Override
+    public String toString() {
+        return "Author{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                '}';
+    }
 }
