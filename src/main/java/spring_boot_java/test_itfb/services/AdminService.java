@@ -69,7 +69,7 @@ public class AdminService {
             throw new PersonNotFoundException("Пользователь с идентификатором " + id + " не найден.");
         } else {
             person.setUsername(updatedPerson.getUsername());
-            person.setRole(updatedPerson.getRole());
+            person.setRole("ROLE_" + updatedPerson.getRole());
             if (!updatedPerson.getPassword().equals("")) {
                 person.setPassword(passwordEncoder.encode(updatedPerson.getPassword()));
             }
