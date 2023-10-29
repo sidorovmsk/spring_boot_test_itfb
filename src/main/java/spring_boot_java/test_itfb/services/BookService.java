@@ -16,7 +16,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-@Transactional()
+@Transactional
 public class BookService {
     private final BookRepository bookRepository;
     private final CustomBookRepository customBookRepository;

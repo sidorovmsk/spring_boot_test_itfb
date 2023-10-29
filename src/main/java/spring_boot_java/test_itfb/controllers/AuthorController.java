@@ -6,7 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
-import spring_boot_java.test_itfb.exceptions.AuthorNotFoundException;
 import spring_boot_java.test_itfb.models.Author;
 import spring_boot_java.test_itfb.services.AuthorService;
 
@@ -40,11 +39,7 @@ public class AuthorController {
     @GetMapping("api/author/{id}")
     public ResponseEntity<?> showAuthorById(@PathVariable("id") int id) {
         log.info("GET request to api/authors/" + id);
-        Author author = authorService.findOne(id);
-        if (author == null) {
-            throw new AuthorNotFoundException("Автор с идентификатором " + id + " не найден.");
-        }
-        return ResponseEntity.ok(author);
+        return authorService.showAuthorById(id);
     }
 
     @GetMapping("/author/{id}")
@@ -64,15 +59,7 @@ public class AuthorController {
     public ResponseEntity<?> editUserById(@PathVariable("id") int id,
                                           @RequestBody Author updatedAuthor) {
         log.info("PUT request to /author_edit/" + id);
-        Author author = authorService.findOne(id);
-
-        if (author == null) {
-            throw new AuthorNotFoundException("Автор с идентификатором " + id + " не найден.");
-        } else {
-            author.setName(updatedAuthor.getName());
-            authorService.save(author);
-            return ResponseEntity.ok("Author with ID " + id + " has been updated.");
-        }
+        return authorService.editUserById(id, updatedAuthor);
     }
 
     @GetMapping("/create/author")
@@ -85,8 +72,7 @@ public class AuthorController {
     @PostMapping("/create/author")
     public ResponseEntity<?> createAuthor(@RequestBody Author newAuthor) {
         log.info("POST request to /create/author with name = " + newAuthor.getName());
-        authorService.save(newAuthor);
-        return ResponseEntity.ok("Author with title " + newAuthor.getName() + " has been created.");
+        return authorService.save(newAuthor);
     }
 
     @ResponseBody
