@@ -6,7 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
-import spring_boot_java.test_itfb.exceptions.BookNotFoundException;
 import spring_boot_java.test_itfb.models.Book;
 import spring_boot_java.test_itfb.services.BookService;
 
@@ -40,11 +39,7 @@ public class BookController {
     @GetMapping("/api/book/{id}")
     public ResponseEntity<?> showBookById(@PathVariable("id") int id) {
         log.info("GET request to /api/book/" + id);
-        Book book = bookService.findOne(id);
-        if (book == null) {
-            throw new BookNotFoundException("Книга с идентификатором " + id + " не найдена.");
-        }
-        return ResponseEntity.ok(book);
+        return bookService.showBookById(id);
     }
 
     @GetMapping("/book/{id}")
@@ -64,15 +59,7 @@ public class BookController {
     public ResponseEntity<?> editBookById(@PathVariable("id") int id,
                                           @RequestBody Book updatedBook) {
         log.info("PUT request to /book_edit/" + id);
-        Book book = bookService.findOne(id);
-
-        if (book == null) {
-            throw new BookNotFoundException("Книга с идентификатором " + id + " не найдена.");
-        } else {
-            book.setTitle(updatedBook.getTitle());
-            bookService.save(book);
-            return ResponseEntity.ok("Book with ID " + id + " has been updated.");
-        }
+        return bookService.editBookById(id, updatedBook);
     }
 
     @GetMapping("/create/book")
@@ -85,8 +72,7 @@ public class BookController {
     @PostMapping("/create/book")
     public ResponseEntity<?> createBook(@RequestBody Book newBook) {
         log.info("POST request to /create/book with title = " + newBook.getTitle());
-        bookService.save(newBook);
-        return ResponseEntity.ok("Book with title " + newBook.getTitle() + " has been created.");
+        return bookService.save(newBook);
     }
 
     @ResponseBody
