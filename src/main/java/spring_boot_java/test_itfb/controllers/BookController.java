@@ -76,7 +76,7 @@ public class BookController {
     }
 
     @ResponseBody
-    @GetMapping("api/findbooks")
+    @GetMapping("/api/findbooks")
     public List<Book> findBooksByPartAuthorName(@RequestParam String sometext) {
         log.info("GET request to api/findbooks with test = " + sometext);
         return bookService.findBooksByPartAuthorName(sometext);
