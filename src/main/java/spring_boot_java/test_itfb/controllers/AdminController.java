@@ -21,56 +21,56 @@ public class AdminController {
         this.adminService = adminService;
     }
 
-    @GetMapping("/users")
+    @GetMapping("/view/users")
     public String getUsersView() {
-        log.info("GET request to /users");
+        log.info("GET request to /view/users");
         adminService.doAdminStuff();
         return "users";
     }
 
     @ResponseBody
-    @GetMapping("/api/users")
+    @GetMapping("/users/list")
     public ResponseEntity<List<PersonDto>> getUsersJsonList() {
-        log.info("GET request to /api/users");
+        log.info("GET request to /users/list");
         adminService.doAdminStuff();
         return adminService.getUsersJsonList();
     }
 
     @ResponseBody
-    @GetMapping("/user_json/{id}")
-    public ResponseEntity<?> getUserJsonById(@PathVariable("id") int id) {
-        log.info("GET request to /user_json/" + id);
+    @GetMapping("/users/{id}")
+    public ResponseEntity<PersonDto> getUserJsonById(@PathVariable("id") int id) {
+        log.info("GET request to /users/" + id);
         adminService.doAdminStuff();
         return adminService.getUserJsonById(id);
     }
 
-    @GetMapping("/user/{id}")
+    @GetMapping("/view/users/{id}")
     public String getUserShowView(@PathVariable("id") int id) {
-        log.info("GET request to /user/" + id);
+        log.info("GET request to /view/users/" + id);
         adminService.doAdminStuff();
         return "people/show";
     }
 
     @ResponseBody
-    @DeleteMapping("/user_delete/{id}")
-    public ResponseEntity<?> deleteUserById(@PathVariable("id") int id) {
-        log.info("DELETE request to /user_delete/" + id);
+    @DeleteMapping("/users/{id}")
+    public ResponseEntity<String> deleteUserById(@PathVariable("id") int id) {
+        log.info("DELETE request to /users/" + id);
         adminService.doAdminStuff();
         return adminService.deleteUserById(id);
     }
 
-    @GetMapping("/user_edit/{id}")
+    @GetMapping("/view/users/edit/{id}")
     public String getUserEditView(@PathVariable("id") int id) {
-        log.info("GET request to /user_edit/" + id);
+        log.info("GET request to /view/users/edit/" + id);
         adminService.doAdminStuff();
         return "people/edit";
     }
 
     @ResponseBody
-    @PostMapping("/user_edit/{id}")
-    public ResponseEntity<?> editUserById(@PathVariable("id") int id,
+    @PutMapping("/users/{id}")
+    public ResponseEntity<String> editUserById(@PathVariable("id") int id,
                                           @RequestBody Person updatedPerson) {
-        log.info("POST request to /user_edit/" + id);
+        log.info("PUT request to /users/" + id);
         adminService.doAdminStuff();
         return adminService.editUserById(id, updatedPerson);
     }

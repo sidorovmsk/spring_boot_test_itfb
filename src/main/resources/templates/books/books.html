@@ -13,7 +13,7 @@
         const bookList = document.getElementById("book-list");
 
         function loadBooks() {
-            fetch("/api/books") // Замените "/api/books" на вашу конечную точку API
+            fetch("/books")
                 .then(response => response.json())
                 .then(data => {
                     bookList.innerHTML = "";

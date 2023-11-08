@@ -20,7 +20,7 @@
         searchForm.addEventListener("submit", function (event) {
             event.preventDefault();
             const sometext = sometextInput.value;
-            fetch(`/api/findbooks?sometext=${sometext}`)
+            fetch(`/findbooks?sometext=${sometext}`)
                 .then(response => response.json())
                 .then(data => {
                     bookList.innerHTML = "";

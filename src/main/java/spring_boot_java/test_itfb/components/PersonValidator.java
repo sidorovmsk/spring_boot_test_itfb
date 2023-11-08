@@ -1,4 +1,4 @@
-package spring_boot_java.test_itfb.util;
+package spring_boot_java.test_itfb.components;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;

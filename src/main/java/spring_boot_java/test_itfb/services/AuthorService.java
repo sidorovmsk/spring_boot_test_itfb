@@ -15,7 +15,6 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-@Transactional
 public class AuthorService {
     private final AuthorRepository authorRepository;
 
@@ -33,12 +32,14 @@ public class AuthorService {
         return foundAuthor.orElse(null);
     }
 
-    public ResponseEntity<?> save(@Valid Author author) {
+    @Transactional
+    public ResponseEntity<String> save(@Valid Author author) {
         authorRepository.save(author);
         return ResponseEntity.ok("Author with title " + author.getName() + " has been created/updated.");
     }
 
-    public ResponseEntity<?> delete(int id) {
+    @Transactional
+    public ResponseEntity<String> delete(int id) {
         if (authorRepository.existsById(id)) {
             authorRepository.deleteById(id);
             return ResponseEntity.ok("Author with ID " + id + " has been deleted.");
@@ -47,7 +48,7 @@ public class AuthorService {
         }
     }
 
-    public ResponseEntity<?> showAuthorById(int id) {
+    public ResponseEntity<Author> showAuthorById(int id) {
         Author author = findOne(id);
         if (author == null) {
             throw new AuthorNotFoundException("Автор с идентификатором " + id + " не найден.");
@@ -55,6 +56,7 @@ public class AuthorService {
         return ResponseEntity.ok(author);
     }
 
+    @Transactional
     public ResponseEntity<?> editUserById(int id, Author updatedAuthor) {
         Author author = findOne(id);
         if (author == null) {

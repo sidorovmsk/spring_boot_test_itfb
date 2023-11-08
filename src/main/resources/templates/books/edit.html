@@ -36,7 +36,7 @@
         .find(row => row.startsWith('XSRF-TOKEN='))
         .split('=')[1];
 
-    fetch(`/api/book/${bookId}`)
+    fetch(`/books/${bookId}`)
         .then(response => response.json())
         .then(data => {
             document.getElementById("bookId").value = data.id;
@@ -71,7 +71,7 @@
         });
 
         // Отправьте данные на сервер для сохранения
-        fetch(`/book_edit/${bookData.bookId}`, {
+        fetch(`/books/${bookData.bookId}`, {
             method: "PUT",
             headers: {
                 "Content-Type": "application/json",
@@ -83,7 +83,7 @@
                 if (response.status === 200) {
                     // Сохранение прошло успешно
                     alert("Книга успешно отредактирована.");
-                    window.location.href = `/book/${bookData.bookId}`;
+                    window.location.href = `/view/books/${bookData.bookId}`;
                 } else {
                     // Ошибка при сохранении
                     alert("Произошла ошибка при редактировании книги.");
@@ -96,7 +96,7 @@
 
     // Код для кнопки "Cancel"
     document.getElementById("cancelButton").addEventListener("click", function () {
-        window.location.href = `/book/${bookId}`; // Возврат на страницу книги
+        window.location.href = `/view/books/${bookId}`; // Возврат на страницу книги
     });
 </script>
 </body>

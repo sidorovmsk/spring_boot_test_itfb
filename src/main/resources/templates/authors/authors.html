@@ -16,7 +16,7 @@
 
         // Функция для выполнения GET-запроса к серверу
         function fetchAuthors() {
-            fetch("/api/authors")
+            fetch("/authors")
                 .then(response => response.json())
                 .then(data => {
                     // Очищаем список перед обновлением

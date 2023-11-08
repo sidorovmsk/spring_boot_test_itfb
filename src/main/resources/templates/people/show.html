@@ -31,7 +31,7 @@
     }
 
     // Отправить GET-запрос на сервер для получения данных о Person
-    fetch(`/user_json/${userId}`)
+    fetch(`/users/${userId}`)
         .then(response => response.json())
         .then(data => {
             displayPersonData(data);
@@ -43,7 +43,7 @@
     // Код для кнопки "Удалить"
     document.getElementById("deleteButton").addEventListener("click", function () {
         // Отправить DELETE-запрос на сервер для удаления пользователя
-        fetch(`/user_delete/${userId}`, {
+        fetch(`/users/${userId}`, {
             method: "DELETE",
             headers: {
                 "X-XSRF-TOKEN": csrfToken
@@ -54,7 +54,7 @@
                 if (response.status === 200) {
                     // Удаление прошло успешно
                     alert("Пользователь удален успешно.");
-                    window.location.href = "/users"; // Перенаправить на главную страницу или другую страницу
+                    window.location.href = "/view/users"; // Перенаправить на главную страницу или другую страницу
                 } else {
                     // Возникла ошибка при удалении
                     alert("Произошла ошибка при удалении пользователя.");
@@ -68,7 +68,7 @@
     // Код для кнопки "Редактировать"
     document.getElementById("editButton").addEventListener("click", function () {
         // Перенаправить на страницу редактирования пользователя, например, /edit_user/1
-        window.location.href = `/user_edit/${userId}`;
+        window.location.href = `/view/users/edit/${userId}`;
     });
 </script>
 </body>

@@ -28,7 +28,7 @@
         .find(row => row.startsWith('XSRF-TOKEN='))
         .split('=')[1];
 
-    fetch(`/api/author/${authorId}`)
+    fetch(`/authors/${authorId}`)
         .then(response => response.json())
         .then(data => {
             document.getElementById("authorId").value = data.id;
@@ -50,7 +50,7 @@
         });
 
         // Отправьте данные на сервер для сохранения
-        fetch(`/author_edit/${authorData.authorId}`, {
+        fetch(`/authors/${authorData.authorId}`, {
             method: "PUT",
             headers: {
                 "Content-Type": "application/json",
@@ -62,7 +62,7 @@
                 if (response.status === 200) {
                     // Сохранение прошло успешно
                     alert("Автор успешно отредактирован.");
-                    window.location.href = `/author/${authorData.authorId}`;
+                    window.location.href = `/view/authors/${authorData.authorId}`;
                 } else {
                     // Ошибка при сохранении
                     alert("Произошла ошибка при редактировании автора.");
@@ -75,7 +75,7 @@
 
     // Код для кнопки "Cancel"
     document.getElementById("cancelButton").addEventListener("click", function () {
-        window.location.href = `/author/${authorId}`; // Возврат на страницу автора
+        window.location.href = `/view/authors/${authorId}`; // Возврат на страницу автора
     });
 </script>
 </body>

@@ -34,7 +34,7 @@
     }
 
     // Отправить GET-запрос на сервер для получения данных о Book
-    fetch(`/api/book/${bookId}`)
+    fetch(`/books/${bookId}`)
         .then(response => {
             if (response.ok) {
                 return response.json();
@@ -68,7 +68,7 @@
     // Код для кнопки "Удалить"
     document.getElementById("deleteButton").addEventListener("click", function () {
         // Отправить DELETE-запрос на сервер для удаления книги
-        fetch(`/book_delete/${bookId}`, {
+        fetch(`/books/${bookId}`, {
                 method: "DELETE",
                 headers: {
                     "Content-Type": "application/json",
@@ -80,7 +80,7 @@
                 if (response.status === 200) {
                     // Удаление прошло успешно
                     alert("Книга удалена успешно.");
-                    window.location.href = "/books"; // Перенаправить на главную страницу книг
+                    window.location.href = "/view/books"; // Перенаправить на главную страницу книг
                 } else {
                     // Возникла ошибка при удалении
                     alert("Произошла ошибка при удалении книги.");
@@ -94,7 +94,7 @@
     // Код для кнопки "Редактировать"
     document.getElementById("editButton").addEventListener("click", function () {
         // Перенаправить на страницу редактирования книги, например, /book_edit/1
-        window.location.href = `/book_edit/${bookId}`;
+        window.location.href = `/view/books/edit/${bookId}`;
     });
 </script>
 </body>

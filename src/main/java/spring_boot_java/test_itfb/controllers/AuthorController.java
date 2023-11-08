@@ -22,63 +22,63 @@ public class AuthorController {
         this.authorService = authorService;
     }
 
-    @GetMapping("/authors")
+    @GetMapping("/view/authors")
     public String getAuthorsView() {
-        log.info("GET request to /authors");
+        log.info("GET request to /view/authors");
         return "authors/authors";
     }
 
     @ResponseBody
-    @GetMapping("api/authors")
+    @GetMapping("/authors")
     public List<Author> getAuthorsJsonList() {
-        log.info("GET request to api/authors");
+        log.info("GET request to /authors");
         return authorService.findAll();
     }
 
     @ResponseBody
-    @GetMapping("api/author/{id}")
-    public ResponseEntity<?> showAuthorById(@PathVariable("id") int id) {
-        log.info("GET request to api/authors/" + id);
+    @GetMapping("/authors/{id}")
+    public ResponseEntity<Author> showAuthorById(@PathVariable("id") int id) {
+        log.info("GET request to /authors/" + id);
         return authorService.showAuthorById(id);
     }
 
-    @GetMapping("/author/{id}")
+    @GetMapping("/view/authors/{id}")
     public String getAuthorShowView(@PathVariable("id") int id) {
-        log.info("GET request to /authors/" + id);
+        log.info("GET request to /view/authors/" + id);
         return "authors/show";
     }
 
-    @GetMapping("/author_edit/{id}")
+    @GetMapping("/view/authors/edit/{id}")
     public String getAuthorEditView(@PathVariable("id") int id) {
-        log.info("GET request to /author_edit/" + id);
+        log.info("GET request to /view/authors/edit/" + id);
         return "authors/edit";
     }
 
     @ResponseBody
-    @PutMapping("/author_edit/{id}")
+    @PutMapping("/authors/{id}")
     public ResponseEntity<?> editUserById(@PathVariable("id") int id,
                                           @RequestBody Author updatedAuthor) {
-        log.info("PUT request to /author_edit/" + id);
+        log.info("PUT request to /authors/" + id);
         return authorService.editUserById(id, updatedAuthor);
     }
 
-    @GetMapping("/create/author")
+    @GetMapping("/view/authors/create")
     public String getAuthorCreateView() {
-        log.info("GET request to /create/author");
+        log.info("GET request to /view/authors/create");
         return "authors/create";
     }
 
     @ResponseBody
-    @PostMapping("/create/author")
-    public ResponseEntity<?> createAuthor(@RequestBody Author newAuthor) {
-        log.info("POST request to /create/author with name = " + newAuthor.getName());
+    @PostMapping("/authors")
+    public ResponseEntity<String> createAuthor(@RequestBody Author newAuthor) {
+        log.info("POST request to /authors with name = " + newAuthor.getName());
         return authorService.save(newAuthor);
     }
 
     @ResponseBody
-    @DeleteMapping("/author_delete/{id}")
-    public ResponseEntity<?> deleteAuthorById(@PathVariable("id") int id) {
-        log.info("DELETE request to /author_delete/" + id);
+    @DeleteMapping("/authors/{id}")
+    public ResponseEntity<String> deleteAuthorById(@PathVariable("id") int id) {
+        log.info("DELETE request to /authors/" + id);
         return authorService.delete(id);
     }
 

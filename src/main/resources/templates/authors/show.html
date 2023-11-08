@@ -28,7 +28,7 @@
     }
 
     // Отправить GET-запрос на сервер для получения данных о Book
-    fetch(`/api/author/${authorId}`)
+    fetch(`/authors/${authorId}`)
         .then(response => {
             if (response.ok) {
                 return response.json();
@@ -51,12 +51,12 @@
     // Код для кнопки "Редактировать"
     document.getElementById("editButton").addEventListener("click", function () {
         // Перенаправить на страницу редактирования книги, например, /book_edit/1
-        window.location.href = `/author_edit/${authorId}`;
+        window.location.href = `/view/authors/edit/${authorId}`;
     });
 
     document.getElementById("deleteButton").addEventListener("click", function () {
         // Отправить DELETE-запрос на сервер для удаления книги
-        fetch(`/author_delete/${authorId}`, {
+        fetch(`/authors/${authorId}`, {
             method: "DELETE",
             headers: {
                 "Content-Type": "application/json",
@@ -66,7 +66,7 @@
             .then(response => {
                 if (response.status === 200) {
                     alert("Автор удален успешно.");
-                    window.location.href = "/authors";
+                    window.location.href = "/view/authors";
                 } else {
                     alert("Произошла ошибка при удалении автора.");
                 }

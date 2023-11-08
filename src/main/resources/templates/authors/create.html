@@ -28,7 +28,7 @@
         const data = { name };
 
         try {
-            const response = await fetch('/create/author', {
+            const response = await fetch('/authors', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -40,7 +40,7 @@
             if (response.status === 200) {
                 messageDiv.innerText = 'Автор создан успешно';
                 // Перенаправляем пользователя на /authors после успешного создания автора
-                window.location.href = '/authors';
+                window.location.href = '/view/authors';
             } else {
                 messageDiv.innerText = 'Произошла ошибка при создании автора';
             }

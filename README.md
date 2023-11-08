@@ -27,41 +27,41 @@ Usage
 API Endpoints.
 The application provides the following API endpoints:
 
-GET /api/users <br>
-GET /user_json/{id} <br>
-DELETE /user_delete/{id} <br>
-POST /user_edit/{id} <br>
+GET /users/list <br>
+GET /users/{id} <br>
+DELETE /users/{id} <br>
+PUT /users/{id} <br>
 POST /registration <br>
-GET /api/about <br>
-GET /api/authors <br>
-GET /api/author/{id} <br>
-PUT /author_edit/{id} <br>
-POST /create/author <br>
-DELETE /author_delete/{id} <br>
-GET /api/books <br>
-GET /api/book/{id} <br>
-PUT /book_edit/{id} <br>
-POST /create/book <br>
+GET /about <br>
+GET /authors <br>
+GET /author/{id} <br>
+PUT /authors/{id} <br>
+POST /authors <br>
+DELETE /authors/{id} <br>
+GET /books <br>
+GET /books/{id} <br>
+PUT /books/{id} <br>
+POST /books <br>
 GET /findbooks?{sometext} <br>
-DELETE /book_delete/{id} <br>
+DELETE /books/{id} <br>
 GET /metrics
 
 Web Interface Methods.
 The web interface methods include:
 
-GET /users <br>
-GET /user/{id} <br>
-GET /user_edit/{id} <br>
+GET /view/users <br>
+GET /view/users/{id} <br>
+GET /view/users/edit/{id} <br>
 GET /login <br>
 GET /registration <br>
-GET /about <br>
+GET /view/about <br>
 GET /logout <br>
-GET /authors <br>
-GET /author/{id} <br>
-GET /author_edit/{id} <br>
-GET /create/author <br>
-GET /books <br>
-GET /book/{id} <br>
-GET /book_edit/{id} <br>
-GET /create/book <br>
+GET /view/authors <br>
+GET /view/authors/{id} <br>
+GET /view/authors/edit/{id} <br>
+GET /view/authors/create <br>
+GET /view/books <br>
+GET /view/books/{id} <br>
+GET /view/books/edit/{id} <br>
+GET /view/books/create <br>
 GET /findbooks

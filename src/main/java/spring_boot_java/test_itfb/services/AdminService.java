@@ -44,7 +44,7 @@ public class AdminService {
         return ResponseEntity.ok(peopleDto);
     }
 
-    public ResponseEntity<?> getUserJsonById(int id) {
+    public ResponseEntity<PersonDto> getUserJsonById(int id) {
         Optional<Person> person = peopleRepository.findById(id);
         if (person.isEmpty()) {
             throw new PersonNotFoundException("Пользователь с идентификатором " + id + " не найден.");
@@ -54,7 +54,7 @@ public class AdminService {
         return ResponseEntity.ok(personDto);
     }
 
-    public ResponseEntity<?> deleteUserById(int id) {
+    public ResponseEntity<String> deleteUserById(int id) {
         if (peopleRepository.existsById(id)) {
             peopleRepository.deleteById(id);
             return ResponseEntity.ok("User with ID " + id + " has been deleted.");
@@ -63,7 +63,7 @@ public class AdminService {
         }
     }
 
-    public ResponseEntity<?> editUserById(int id, Person updatedPerson) {
+    public ResponseEntity<String> editUserById(int id, Person updatedPerson) {
         Person person = peopleRepository.findById(id).orElse(null);
         if (person == null) {
             throw new PersonNotFoundException("Пользователь с идентификатором " + id + " не найден.");

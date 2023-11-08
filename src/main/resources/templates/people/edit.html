@@ -50,8 +50,8 @@
             jsonData[key] = value;
         });
 
-        fetch(`/user_edit/${userId}`, {
-            method: 'POST',
+        fetch(`/users/${userId}`, {
+            method: 'PUT',
             headers: {
                 'Content-Type': 'application/json',
                 "X-XSRF-TOKEN": csrfToken
@@ -61,7 +61,7 @@
             .then(response => {
                 if (response.status === 200) {
                     alert("Пользователь успешно изменен.");
-                    window.location.href = `/users`; // Перенаправить на главную страницу или другую страницу
+                    window.location.href = `/view/users`; // Перенаправить на главную страницу или другую страницу
                 } else {
                     // Возникла ошибка при удалении
                     alert("Произошла ошибка при изменении пользователя.");
@@ -73,7 +73,7 @@
     }
 
     // Отправить GET-запрос на сервер для получения данных о Person
-    fetch(`/user_json/${userId}`)
+    fetch(`/users/${userId}`)
         .then(response => response.json())
         .then(data => {
             displayPersonData(data);

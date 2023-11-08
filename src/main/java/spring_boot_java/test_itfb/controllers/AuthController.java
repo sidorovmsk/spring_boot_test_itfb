@@ -13,11 +13,11 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+import spring_boot_java.test_itfb.components.PersonValidator;
 import spring_boot_java.test_itfb.dto.PersonDto;
 import spring_boot_java.test_itfb.models.Person;
 import spring_boot_java.test_itfb.services.AdminService;
 import spring_boot_java.test_itfb.services.RegistrationService;
-import spring_boot_java.test_itfb.util.PersonValidator;
 
 import javax.validation.Valid;
 
@@ -65,14 +65,14 @@ public class AuthController {
     }
 
 
-    @GetMapping("/about")
+    @GetMapping("/view/about")
     public String getAboutView() {
-        log.info("GET request to /about");
+        log.info("GET request to /view/about");
         return "about";
     }
 
     @ResponseBody
-    @GetMapping("/api/about")
+    @GetMapping("/about")
     public ResponseEntity<?> showUserInfo() {
         log.info("GET request to /about");
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();

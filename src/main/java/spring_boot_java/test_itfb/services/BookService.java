@@ -16,7 +16,6 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-@Transactional
 public class BookService {
     private final BookRepository bookRepository;
     private final CustomBookRepository customBookRepository;
@@ -36,7 +35,8 @@ public class BookService {
         return foundBook.orElse(null);
     }
 
-    public ResponseEntity<?> save(@Valid Book book) {
+    @Transactional
+    public ResponseEntity<String> save(@Valid Book book) {
         bookRepository.save(book);
         return ResponseEntity.ok("Book with title " + book.getTitle() + " has been created/updated.");
     }
@@ -45,7 +45,8 @@ public class BookService {
         return customBookRepository.findBooksByPartAuthorName(authorNamePart);
     }
 
-    public ResponseEntity<?> delete(int id) {
+    @Transactional
+    public ResponseEntity<String> delete(int id) {
         if (bookRepository.existsById(id)) {
             bookRepository.deleteById(id);
             return ResponseEntity.ok("Book with ID " + id + " has been deleted.");
@@ -62,6 +63,7 @@ public class BookService {
         return ResponseEntity.ok(book);
     }
 
+    @Transactional
     public ResponseEntity<?> editBookById(int id, Book updatedBook) {
         Book book = findOne(id);
         if (book == null) {

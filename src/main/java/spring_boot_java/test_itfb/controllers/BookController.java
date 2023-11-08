@@ -22,76 +22,76 @@ public class BookController {
         this.bookService = bookService;
     }
 
-    @GetMapping("/books")
+    @GetMapping("/view/books")
     public String getBooksView() {
-        log.info("GET request to /books");
+        log.info("GET request to /view/books");
         return "books/books";
     }
 
     @ResponseBody
-    @GetMapping("/api/books")
+    @GetMapping("/books")
     public List<Book> getBooksJsonList() {
-        log.info("GET request to /api/books");
+        log.info("GET request to /books");
         return bookService.findAll();
     }
 
     @ResponseBody
-    @GetMapping("/api/book/{id}")
+    @GetMapping("/books/{id}")
     public ResponseEntity<?> showBookById(@PathVariable("id") int id) {
-        log.info("GET request to /api/book/" + id);
+        log.info("GET request to /books/" + id);
         return bookService.showBookById(id);
     }
 
-    @GetMapping("/book/{id}")
+    @GetMapping("/view/books/{id}")
     public String getBookShowView(@PathVariable("id") int id) {
-        log.info("GET request to /book/" + id);
+        log.info("GET request to /view/books/" + id);
         return "books/show";
     }
 
-    @GetMapping("/book_edit/{id}")
+    @GetMapping("/view/books/edit/{id}")
     public String getBookEditView(@PathVariable("id") int id) {
-        log.info("GET request to /book_edit/" + id);
+        log.info("GET request to /view/books/edit/" + id);
         return "books/edit";
     }
 
     @ResponseBody
-    @PutMapping("/book_edit/{id}")
+    @PutMapping("/books/{id}")
     public ResponseEntity<?> editBookById(@PathVariable("id") int id,
                                           @RequestBody Book updatedBook) {
-        log.info("PUT request to /book_edit/" + id);
+        log.info("PUT request to /books/" + id);
         return bookService.editBookById(id, updatedBook);
     }
 
-    @GetMapping("/create/book")
+    @GetMapping("/view/books/create")
     public String getBookCreateView() {
-        log.info("GET request to /create/book");
+        log.info("GET request to /view/books/create");
         return "books/create";
     }
 
     @ResponseBody
-    @PostMapping("/create/book")
-    public ResponseEntity<?> createBook(@RequestBody Book newBook) {
-        log.info("POST request to /create/book with title = " + newBook.getTitle());
+    @PostMapping("/books")
+    public ResponseEntity<String> createBook(@RequestBody Book newBook) {
+        log.info("POST request to /books with title = " + newBook.getTitle());
         return bookService.save(newBook);
     }
 
     @ResponseBody
-    @GetMapping("/api/findbooks")
+    @GetMapping("/findbooks")
     public List<Book> findBooksByPartAuthorName(@RequestParam String sometext) {
-        log.info("GET request to api/findbooks with test = " + sometext);
+        log.info("GET request to /findbooks with text = " + sometext);
         return bookService.findBooksByPartAuthorName(sometext);
     }
 
-    @GetMapping("/findbooks")
+    @GetMapping("/view/findbooks")
     public String getBookSearchView() {
-        log.info("GET request to /findbooks");
+        log.info("GET request to /view/findbooks");
         return "books/search";
     }
 
     @ResponseBody
-    @DeleteMapping("/book_delete/{id}")
-    public ResponseEntity<?> deleteBookById(@PathVariable("id") int id) {
-        log.info("DELETE request to /book_delete/" + id);
+    @DeleteMapping("/books/{id}")
+    public ResponseEntity<String> deleteBookById(@PathVariable("id") int id) {
+        log.info("DELETE request to /books/" + id);
         return bookService.delete(id);
     }
 

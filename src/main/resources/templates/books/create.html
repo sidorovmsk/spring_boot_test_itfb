@@ -37,7 +37,7 @@
         const data = {title, authors: selectedAuthors};
 
         try {
-            const response = await fetch('/create/book', {
+            const response = await fetch('/books', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -50,7 +50,7 @@
                 document.getElementById('message').innerText = 'Книга создана успешно';
                 // Перенаправление на страницу /books через 2 секунды
                 setTimeout(() => {
-                    window.location.href = '/books';
+                    window.location.href = '/view/books';
                 }, 2000);
             } else {
                 document.getElementById('message').innerText = 'Произошла ошибка при создании книги';
@@ -64,7 +64,7 @@
     // Функция для загрузки списка авторов из API
     async function loadAuthors() {
         try {
-            const response = await fetch('/api/authors');
+            const response = await fetch('/authors');
             const authors = await response.json();
             const authorsSelect = document.getElementById('authors');
 

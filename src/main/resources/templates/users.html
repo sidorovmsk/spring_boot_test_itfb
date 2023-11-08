@@ -14,7 +14,7 @@
 
         // Функция для загрузки данных пользователей с бэкенда
         function loadUsers() {
-            fetch("/api/users")
+            fetch("/users/list")
                 .then(response => response.json())
                 .then(data => {
                     // Очищаем список пользователей перед добавлением новых
