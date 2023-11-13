@@ -59,13 +59,13 @@ public class AuthorService {
     }
 
     @Transactional
-    public ResponseEntity<?> editUserById(int id, Author updatedAuthor) {
+    public ResponseEntity<String> editAuthorById(int id, Author updatedAuthor) {
         Optional<Author> authorOptional = findAuthorById(id);
 
         if (authorOptional.isPresent()) {
             Author author = authorOptional.get();
             author.setName(updatedAuthor.getName());
-            return ResponseEntity.ok(save(author));
+            return ResponseEntity.ok(save(author).getBody());
         } else {
             throw new AuthorNotFoundException("Автор с идентификатором " + id + " не найден.");
         }

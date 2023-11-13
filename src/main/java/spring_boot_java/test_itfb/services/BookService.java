@@ -55,7 +55,7 @@ public class BookService {
         }
     }
 
-    public ResponseEntity<?> showBookById(int id) {
+    public ResponseEntity<Book> showBookById(int id) {
         Optional<Book> bookOptional = findBookById(id);
 
         if (bookOptional.isPresent()) {
@@ -67,13 +67,13 @@ public class BookService {
     }
 
     @Transactional
-    public ResponseEntity<?> editBookById(int id, Book updatedBook) {
+    public ResponseEntity<String> editBookById(int id, Book updatedBook) {
         Optional<Book> bookOptional = findBookById(id);
 
         if (bookOptional.isPresent()) {
             Book book = bookOptional.get();
             book.setTitle(updatedBook.getTitle());
-            return ResponseEntity.ok(save(book));
+            return ResponseEntity.ok(save(book).getBody());
         } else {
             throw new AuthorNotFoundException("Книга с идентификатором " + id + " не найдена.");
         }

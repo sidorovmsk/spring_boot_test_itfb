@@ -65,7 +65,7 @@ public class AuthorController {
     public ResponseEntity<?> editUserById(@PathVariable("id") int id,
                                           @RequestBody Author updatedAuthor) {
         log.info("PUT request to /authors/" + id);
-        return authorService.editUserById(id, updatedAuthor);
+        return authorService.editAuthorById(id, updatedAuthor);
     }
 
     @GetMapping("/view/authors/create")
