@@ -1,4 +1,4 @@
-package spring_boot_java.test_itfb;
+package spring_boot_java.test_itfb.config;
 
 import io.micrometer.prometheus.PrometheusConfig;
 import io.micrometer.prometheus.PrometheusMeterRegistry;
