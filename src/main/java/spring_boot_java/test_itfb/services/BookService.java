@@ -6,6 +6,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import spring_boot_java.test_itfb.exceptions.AuthorNotFoundException;
 import spring_boot_java.test_itfb.exceptions.BookNotFoundException;
 import spring_boot_java.test_itfb.models.Book;
 import spring_boot_java.test_itfb.repositories.BookRepository;
@@ -30,9 +31,8 @@ public class BookService {
         return bookRepository.findAll();
     }
 
-    public Book findOne(int id) {
-        Optional<Book> foundBook = bookRepository.findById(id);
-        return foundBook.orElse(null);
+    public Optional<Book> findBookById(int id) {
+        return bookRepository.findById(id);
     }
 
     @Transactional
@@ -56,21 +56,26 @@ public class BookService {
     }
 
     public ResponseEntity<?> showBookById(int id) {
-        Book book = findOne(id);
-        if (book == null) {
+        Optional<Book> bookOptional = findBookById(id);
+
+        if (bookOptional.isPresent()) {
+            Book book = bookOptional.get();
+            return ResponseEntity.ok(book);
+        } else {
             throw new BookNotFoundException("Книга с идентификатором " + id + " не найдена.");
         }
-        return ResponseEntity.ok(book);
     }
 
     @Transactional
     public ResponseEntity<?> editBookById(int id, Book updatedBook) {
-        Book book = findOne(id);
-        if (book == null) {
-            throw new BookNotFoundException("Книга с идентификатором " + id + " не найдена.");
-        } else {
+        Optional<Book> bookOptional = findBookById(id);
+
+        if (bookOptional.isPresent()) {
+            Book book = bookOptional.get();
             book.setTitle(updatedBook.getTitle());
-            return save(book);
+            return ResponseEntity.ok(save(book));
+        } else {
+            throw new AuthorNotFoundException("Книга с идентификатором " + id + " не найдена.");
         }
     }
 

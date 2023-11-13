@@ -27,9 +27,8 @@ public class AuthorService {
         return authorRepository.findAll();
     }
 
-    public Author findOne(int id) {
-        Optional<Author> foundAuthor = authorRepository.findById(id);
-        return foundAuthor.orElse(null);
+    public Optional<Author> findAuthorById(int id) {
+        return authorRepository.findById(id);
     }
 
     @Transactional
@@ -49,21 +48,26 @@ public class AuthorService {
     }
 
     public ResponseEntity<Author> showAuthorById(int id) {
-        Author author = findOne(id);
-        if (author == null) {
+        Optional<Author> authorOptional = findAuthorById(id);
+
+        if (authorOptional.isPresent()) {
+            Author author = authorOptional.get();
+            return ResponseEntity.ok(author);
+        } else {
             throw new AuthorNotFoundException("Автор с идентификатором " + id + " не найден.");
         }
-        return ResponseEntity.ok(author);
     }
 
     @Transactional
     public ResponseEntity<?> editUserById(int id, Author updatedAuthor) {
-        Author author = findOne(id);
-        if (author == null) {
-            throw new AuthorNotFoundException("Автор с идентификатором " + id + " не найден.");
-        } else {
+        Optional<Author> authorOptional = findAuthorById(id);
+
+        if (authorOptional.isPresent()) {
+            Author author = authorOptional.get();
             author.setName(updatedAuthor.getName());
-            return save(author);
+            return ResponseEntity.ok(save(author));
+        } else {
+            throw new AuthorNotFoundException("Автор с идентификатором " + id + " не найден.");
         }
     }
 }
