@@ -1,5 +1,6 @@
 package spring_boot_java.test_itfb.services;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -11,6 +12,7 @@ import spring_boot_java.test_itfb.security.PersonDetails;
 
 import java.util.Optional;
 
+@Slf4j
 @Service
 public class PersonDetailsService implements UserDetailsService {
 
@@ -29,5 +31,16 @@ public class PersonDetailsService implements UserDetailsService {
             throw new UsernameNotFoundException("User not found");
 
         return new PersonDetails(person.get());
+    }
+
+    public boolean userExists(String username) {
+        try {
+            loadUserByUsername(username);
+            log.info("Пользователь \"" + username + "\" уже существует");
+            return true;
+        } catch (UsernameNotFoundException ignored) {
+            log.info("Пользователь \"" + username + "\" НЕ существует, будет создан");
+            return false;
+        }
     }
 }
